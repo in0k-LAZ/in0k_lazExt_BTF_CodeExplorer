@@ -17,18 +17,19 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
+    <Version Minor="1"/>
     <Files Count="2">
       <Item1>
         <Filename Value="srcPKG\BTF_CodeExplorer.pas"/>
         <UnitName Value="BTF_CodeExplorer"/>
       </Item1>
       <Item2>
-        <Filename Value="in0k_lazExt_CEwBTF_CORE.pas"/>
+        <Filename Value="in0k_lazExt_BTF_CodeExplorer_MAIN.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="in0k_lazExt_CEwBTF_CORE"/>
+        <UnitName Value="in0k_lazExt_BTF_CodeExplorer_MAIN"/>
       </Item2>
     </Files>
-    <Type Value="RunAndDesignTime"/>
+    <Type Value="DesignTime"/>
     <RequiredPkgs Count="2">
       <Item1>
         <PackageName Value="IDEIntf"/>

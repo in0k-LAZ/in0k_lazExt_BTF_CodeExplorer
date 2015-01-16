@@ -7,13 +7,14 @@ unit in0k_lazExt_BTF_CodeExplorer;
 interface
 
 uses
-  BTF_CodeExplorer, in0k_lazExt_CEwBTF_CORE, LazarusPackageIntf;
+  BTF_CodeExplorer, in0k_lazExt_BTF_CodeExplorer_MAIN, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
-  RegisterUnit('in0k_lazExt_CEwBTF_CORE', @in0k_lazExt_CEwBTF_CORE.Register);
+  RegisterUnit('in0k_lazExt_BTF_CodeExplorer_MAIN', 
+    @in0k_lazExt_BTF_CodeExplorer_MAIN.Register);
 end;
 
 initialization
