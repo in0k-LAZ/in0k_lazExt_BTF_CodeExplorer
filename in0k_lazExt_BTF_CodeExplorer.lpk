@@ -18,16 +18,20 @@
       </Other>
     </CompilerOptions>
     <Version Minor="1"/>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
-        <Filename Value="srcPKG\BTF_CodeExplorer.pas"/>
-        <UnitName Value="BTF_CodeExplorer"/>
+        <Filename Value="srcPKG\lazExt_BTF_CodeExplorer.pas"/>
+        <UnitName Value="lazExt_BTF_CodeExplorer"/>
       </Item1>
       <Item2>
         <Filename Value="in0k_lazExt_BTF_CodeExplorer_MAIN.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="in0k_lazExt_BTF_CodeExplorer_MAIN"/>
       </Item2>
+      <Item3>
+        <Filename Value="srcPKG\lazExt_BTF_CodeExplorer_debug.pas"/>
+        <UnitName Value="lazExt_BTF_CodeExplorer_debug"/>
+      </Item3>
     </Files>
     <Type Value="DesignTime"/>
     <RequiredPkgs Count="2">

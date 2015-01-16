@@ -7,7 +7,8 @@ unit in0k_lazExt_BTF_CodeExplorer;
 interface
 
 uses
-  BTF_CodeExplorer, in0k_lazExt_BTF_CodeExplorer_MAIN, LazarusPackageIntf;
+  lazExt_BTF_CodeExplorer, in0k_lazExt_BTF_CodeExplorer_MAIN, 
+  lazExt_BTF_CodeExplorer_debug, LazarusPackageIntf;
 
 implementation
 
