@@ -24,13 +24,13 @@
         <UnitName Value="lazExt_BTF_CodeExplorer"/>
       </Item1>
       <Item2>
+        <Filename Value="srcPKG\lazExt_BTF_CodeExplorer_debug.pas"/>
+        <UnitName Value="lazExt_BTF_CodeExplorer_debug"/>
+      </Item2>
+      <Item3>
         <Filename Value="in0k_lazExt_BTF_CodeExplorer_MAIN.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="in0k_lazExt_BTF_CodeExplorer_MAIN"/>
-      </Item2>
-      <Item3>
-        <Filename Value="srcPKG\lazExt_BTF_CodeExplorer_debug.pas"/>
-        <UnitName Value="lazExt_BTF_CodeExplorer_debug"/>
       </Item3>
     </Files>
     <Type Value="DesignTime"/>
