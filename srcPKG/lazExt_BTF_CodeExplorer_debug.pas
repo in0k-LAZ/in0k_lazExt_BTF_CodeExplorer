@@ -4,13 +4,15 @@ unit lazExt_BTF_CodeExplorer_debug;
 
 interface
 
+uses in0kLazExt_wndDBG;
+
 procedure DEBUG(const msgTYPE,msgTEXT:string);
 
 implementation
 
 procedure DEBUG(const msgTYPE,msgTEXT:string);
 begin
-    // ничего не делаем
+    in0kLazExtWndDBG_Message(msgTYPE,msgTEXT);
 end;
 
 end.

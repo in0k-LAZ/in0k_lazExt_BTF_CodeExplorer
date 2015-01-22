@@ -4,7 +4,7 @@ unit in0k_lazExt_BTF_CodeExplorer_MAIN;
 
 interface
 
-uses lazExt_BTF_CodeExplorer;
+uses lazExt_BTF_CodeExplorer, in0kLazExt_wndDBG, PropEdits;
 
 procedure REGISTER;
 
@@ -23,6 +23,8 @@ procedure REGISTER;
 begin
    _BTF_CodeExplorer_:=tLazExt_BTF_CodeExplorer.Create;
    _BTF_CodeExplorer_.RegisterInIdeLAZARUS;
+    //
+    in0kLazExt_wndDBG.RegisterInIDE('[DEBUG] lazExt_BTF_CodeExplorer','[DEBUG] lazExt_BTF_CodeExplorer');
 end;
 
 initialization

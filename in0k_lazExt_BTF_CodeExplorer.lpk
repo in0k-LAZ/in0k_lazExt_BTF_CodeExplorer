@@ -17,8 +17,8 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Minor="1"/>
-    <Files Count="3">
+    <Version Minor="2"/>
+    <Files Count="4">
       <Item1>
         <Filename Value="srcPKG\lazExt_BTF_CodeExplorer.pas"/>
         <UnitName Value="lazExt_BTF_CodeExplorer"/>
@@ -28,10 +28,14 @@
         <UnitName Value="lazExt_BTF_CodeExplorer_debug"/>
       </Item2>
       <Item3>
+        <Filename Value="srcPKG\in0kLazExt_wndDBG.pas"/>
+        <UnitName Value="in0kLazExt_wndDBG"/>
+      </Item3>
+      <Item4>
         <Filename Value="in0k_lazExt_BTF_CodeExplorer_MAIN.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="in0k_lazExt_BTF_CodeExplorer_MAIN"/>
-      </Item3>
+      </Item4>
     </Files>
     <Type Value="DesignTime"/>
     <RequiredPkgs Count="2">

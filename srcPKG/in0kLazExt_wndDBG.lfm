@@ -1,0 +1,61 @@
+object in0kLazExtWndDBG: Tin0kLazExtWndDBG
+  Left = 379
+  Height = 240
+  Top = 129
+  Width = 320
+  Caption = 'in0kLazExtWndDBG'
+  ClientHeight = 240
+  ClientWidth = 320
+  OnClose = FormClose
+  LCLVersion = '1.2.6.0'
+  object Memo1: TMemo
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Button1
+    Left = 0
+    Height = 215
+    Top = 0
+    Width = 320
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ScrollBars = ssBoth
+    TabOrder = 0
+  end
+  object Button1: TButton
+    AnchorSideLeft.Control = Owner
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 25
+    Top = 215
+    Width = 75
+    Action = a_Clear
+    Anchors = [akLeft, akBottom]
+    TabOrder = 1
+  end
+  object Button2: TButton
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 245
+    Height = 25
+    Top = 215
+    Width = 75
+    Action = a_Save
+    Anchors = [akRight, akBottom]
+    TabOrder = 2
+  end
+  object ActionList1: TActionList
+    left = 257
+    top = 40
+    object a_Clear: TAction
+      Caption = 'Clear'
+      OnExecute = a_ClearExecute
+    end
+    object a_Save: TAction
+      Caption = 'Save'
+    end
+  end
+end

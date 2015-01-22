@@ -4,7 +4,7 @@ unit lazExt_BTF_CodeExplorer;
 
 interface
 
-uses SrcEditorIntf, IDECommands,
+uses SrcEditorIntf, IDECommands, PropEdits,
   lazExt_BTF_CodeExplorer_debug;
 
 type
@@ -35,9 +35,15 @@ type
     destructor DESTROY; override;
   public
     procedure RegisterInIdeLAZARUS;
+    //procedure sdfsdf(const Name: String);
   end;
 
 implementation
+
+{procedure tLazExt_BTF_CodeExplorer.sdfsdf(const Name: String) ;
+begin
+    DEBUG('asdf',Name);
+end;}
 
 constructor tLazExt_BTF_CodeExplorer.Create;
 begin
@@ -53,6 +59,7 @@ end;
 procedure tLazExt_BTF_CodeExplorer.RegisterInIdeLAZARUS;
 begin
    _ideEvent_semEditorActivate_register_;
+    // GlobalDesignHook.AddHandlerShowMethod(@sdfsdf);
 end;
 
 {%region --- CodeExplorer WINDOW ---------------------------------- /fold}
@@ -96,7 +103,12 @@ begin
         if not result then DEBUG('ER','IDECommand err execute');
         {$endIf}
     end
-    else result:=false;
+    else begin
+        result:=false;
+        {$ifOpt D+}
+        if not result then DEBUG('ER','IDECommand _IDECommand_OpnCE_==nil');
+        {$endIf}
+    end;
 end;
 
 {%endRegion}
@@ -120,6 +132,9 @@ begin
     end
     else begin
         result:=false;
+        {$ifOpt D+}
+        DEBUG('EXECdfsd','_sdfsdfsdfdo_BTF_CodeExplorer==FALSE');
+        {$endIf}
     end;
 end;
 
@@ -158,7 +173,7 @@ begin
                 // МОЖНО попробовать выполнить ПОЛЕЗНУЮ нагрузку
                 if _do_BTF_CodeExplorer then begin //< что и делаем
                     {$ifOpt D+}
-                    DEBUG('EXEC','_do_BTF_CodeExplorer==FALSE');
+                    DEBUG('EXEC','_do_BTF_CodeExplorer==OK');
                     {$endIf}
                 end
                 else begin
@@ -198,3 +213,5 @@ end;
 
 end.
 
+//DoBringToFrontFormOrUnit
+//DoShowDesignerFormOfCurrentSrc
