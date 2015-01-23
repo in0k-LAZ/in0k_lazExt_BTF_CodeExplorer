@@ -42,7 +42,7 @@ type
   {%region --- IdeEVENT semEditorActivate ------------------------- /fold}
   strict private
     // текущий ОБРАБАТЫВАЕМЫЙ или ПОСЛЕДНИЙ обработанный
-   _ideEvent_Editor_:TSourceEditorInterface;
+  // _ideEvent_Editor_:TSourceEditorInterface;
    _ideEvent_Window_:TSourceEditorWindowInterface;
     procedure _ideEvent_exeEvent_;
 
@@ -70,7 +70,7 @@ end;}
 constructor tLazExt_BTF_CodeExplorer.Create;
 begin
    _IDECommand_OpnCE_:=NIL;
-   _ideEvent_Editor_ :=nil;
+   //_ideEvent_Editor_ :=nil;
    _ideEvent_Window_ :=nil;
 
   // LazarusIDE.w;
@@ -201,8 +201,8 @@ begin
         if Assigned(tmpSourceWindow) then begin
             tmpSourceEditor:=SourceEditorManagerIntf.ActiveEditor;
             if Assigned(tmpSourceEditor) then begin //< чуть потоньше, но тоже толстоват
-                if tmpSourceEditor<>_ideEvent_Editor_ then begin
-                   _ideEvent_Editor_:=tmpSourceEditor;
+                if tmpSourceWindow<>_ideEvent_Window_ then begin
+                   _ideEvent_Window_:=tmpSourceWindow;
                    _ide_ActiveSrcWND_reStore_onDeactivate(tmpSourceWindow);
                    _do_BTF_CodeExplorer;//< МОЖНО попробовать выполнить ПОЛЕЗНУЮ нагрузку
                    _ide_ActiveSrcWND_rePlace_onDeactivate(tmpSourceWindow);
@@ -214,7 +214,7 @@ begin
                 end;
             end
             else begin
-               _ideEvent_Editor_:=nil;
+               _ideEvent_Window_:=nil;
                 {$ifOpt D+}
                 DEBUG('ER','ActiveEditor is NULL');
                 {$endIf}
@@ -227,7 +227,7 @@ begin
         end;
     end
     else begin
-       _ideEvent_Editor_:=nil;
+       _ideEvent_Window_:=nil;
         {$ifOpt D+}
         DEBUG('ER','IDE not ready');
         {$endIf}
@@ -262,7 +262,7 @@ begin
     {$endIf}
     if Assigned(Sender) then begin
         if Sender is TSourceEditorWindowInterface then begin
-           _ideEvent_Editor_:=NIL;
+           _ideEvent_Window_:=NIL;
            _ide_ActiveSrcWND_reStore_onDeactivate(tForm(Sender));
             with TSourceEditorWindowInterface(Sender) do begin
                 if Assigned(OnDeactivate) then OnDeactivate(Sender);
