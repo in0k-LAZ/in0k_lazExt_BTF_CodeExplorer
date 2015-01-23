@@ -4,52 +4,42 @@ unit lazExt_BTF_CodeExplorer;
 
 interface
 
-uses {$ifOpt D+}sysutils{$endIf},
-    IDEIntf,LazIDEIntf,
-    SrcEditorIntf, IDECommands, PropEdits,  Classes, Forms,
-    lazExt_BTF_CodeExplorer_debug;
+{$define _DEBUG_} //< надо-ли режимДебаг
+
+uses {$ifDEF _DEBUG_}sysutils, lazExt_BTF_CodeExplorer_debug,{$endIf}
+    SrcEditorIntf, IDECommands,  Classes, Forms;
 
 type
 
  tLazExt_BTF_CodeExplorer=class
-  {%region --- CodeExplorer WINDOW -------------------------------- /fold}
+  {%region --- CodeExplorer Window IDECommand --------------------- /fold}
   strict private
    _IDECommand_OpnCE_:TIDECommand; //< это комманда для открытия
     procedure _IDECommand_OpnCE_FIND_;
     function  _IDECommand_OpnCE_present_:boolean;
     function  _IDECommand_OpnCE_execute_:boolean;
   {%endRegion}
-  {%region --- ВСЯ СУТь ------------------------------------------- /fold}
-
-  //                     myCustom
+  {%region --- ActiveSrcWND event onDestroy ----------------------- /fold}
   protected //< полезная нагрузка
    _ide_ActSrc_wnd_onDeactivate_original:TNotifyEvent;
     procedure _wnd_onDeactivate_myCustom(Sender:TObject);
     procedure _ide_ActiveSrcWND_rePlace_onDeactivate(const wnd:tForm);
     procedure _ide_ActiveSrcWND_reStore_onDeactivate(const wnd:tForm);
-
-
+  {%endRegion}
+  {%region --- ВСЯ СУТь ------------------------------------------- /fold}
   protected //< полезная нагрузка
-    //last:TNotifyEvent;
-    //procedure FormDeactivate(Sender: TObject);
-
-
-
     function _do_BTF_CodeExplorer_do_WndCE_OPN:boolean;
     function _do_BTF_CodeExplorer_do_wndSE_BTF:boolean;
     function _do_BTF_CodeExplorer:boolean;
   {%endRegion}
-  {%region --- IdeEVENT semEditorActivate ------------------------- /fold}
-  strict private
-    // текущий ОБРАБАТЫВАЕМЫЙ или ПОСЛЕДНИЙ обработанный
-  // _ideEvent_Editor_:TSourceEditorInterface;
+  {%region --- IdeEVENT ------------------------------------------- /fold}
+  strict private //< обработка событий
+    // текущee АКТИВНОЕ окно редактирования
    _ideEvent_Window_:TSourceEditorWindowInterface;
     procedure _ideEvent_exeEvent_;
-
     procedure _ideEvent_semEditorActivate(Sender:TObject);
-    //procedure _ideEvent_semWindowActivate(Sender:TObject);
     procedure _ideEvent_semWindowFocused (Sender:TObject);
-
+  strict private //< регистрация событий
     procedure _ideEvent_register_;
   {%endRegion}
   public
@@ -57,24 +47,14 @@ type
     destructor DESTROY; override;
   public
     procedure RegisterInIdeLAZARUS;
-    //procedure sdfsdf(const Name: String);
   end;
 
 implementation
 
-{procedure tLazExt_BTF_CodeExplorer.sdfsdf(const Name: String) ;
-begin
-    DEBUG('asdf',Name);
-end;}
-
 constructor tLazExt_BTF_CodeExplorer.Create;
 begin
    _IDECommand_OpnCE_:=NIL;
-   //_ideEvent_Editor_ :=nil;
    _ideEvent_Window_ :=nil;
-
-  // LazarusIDE.w;
-
 end;
 
 destructor tLazExt_BTF_CodeExplorer.DESTROY;
@@ -85,10 +65,9 @@ end;
 procedure tLazExt_BTF_CodeExplorer.RegisterInIdeLAZARUS;
 begin
    _ideEvent_register_;
-    // GlobalDesignHook.AddHandlerShowMethod(@sdfsdf);
 end;
 
-{%region --- CodeExplorer WINDOW ---------------------------------- /fold}
+{%region --- CodeExplorer Window IDECommand ----------------------- /fold}
 
 {info: жестко спрятанное Окно.
     присутствует ТОЛЬКО в исходниках `$(LazarusDir)/ide/codeexplorer.pas`
@@ -116,7 +95,7 @@ function tLazExt_BTF_CodeExplorer._IDECommand_OpnCE_present_:boolean;
 begin
    _IDECommand_OpnCE_FIND_;
     result:=Assigned(_IDECommand_OpnCE_);
-    {$ifOpt D+}
+    {$ifDEF _DEBUG_}
     if not result then DEBUG('ER','IDECommand NOT found');
     {$endIf}
 end;
@@ -125,15 +104,99 @@ function tLazExt_BTF_CodeExplorer._IDECommand_OpnCE_execute_:boolean;
 begin
     if Assigned(_IDECommand_OpnCE_) then begin
         result:=_IDECommand_OpnCE_.Execute(nil);
-        {$ifOpt D+}
+        {$ifDEF _DEBUG_}
         if result     then DEBUG('CodeExplorer','BringToFront OK')
                       else DEBUG('CodeExplorer','BringToFront ER');
         {$endIf}
     end
     else begin
         result:=false;
-        {$ifOpt D+}
+        {$ifDEF _DEBUG_}
         if not result then DEBUG('CodeExplorer','BringToFront ER : IDECommand _IDECommand_OpnCE_==nil');
+        {$endIf}
+    end;
+end;
+
+{%endRegion}
+
+{%region --- ActiveSrcWND event onDestroy ------------------------- /fold}
+
+{info: Идея: отловить момент "выхода" из окна редактирования.
+    Используем "грязны" метод: аля "сабКлассинг", заменяем на СОБСТВЕННУЮ
+    реализацию событие `onDeactivate`.
+}
+
+// НАШЕ событие, при `onDeactivate` ActiveSrcWND
+procedure tLazExt_BTF_CodeExplorer._wnd_onDeactivate_myCustom(Sender:TObject);
+begin
+    {$ifDEF _DEBUG_}
+    DEBUG('onDeactivate_myCustom','--->>> Sender$'+IntToHex(PtrUInt(Sender),sizeOf(PtrUInt)*2));
+    {$endIf}
+    //----------------------------------------------------------------------
+
+    // отмечаем что ВЫШЛИ из окна
+   _ideEvent_Window_:=NIL;
+    // восстановить событие `onDeactivate` на исходное, и выполнияем его
+    if Assigned(Sender) then begin
+        if Sender is TSourceEditorWindowInterface then begin
+           _ide_ActiveSrcWND_reStore_onDeactivate(tForm(Sender));
+            with TSourceEditorWindowInterface(Sender) do begin
+                if Assigned(OnDeactivate) then OnDeactivate(Sender);
+            end;
+            {$ifDEF _DEBUG_}
+            DEBUG('OK','executed');
+            {$endIf}
+        end
+        else begin
+            {$ifDEF _DEBUG_}
+            DEBUG('ER','Sender is NOT TSourceEditorWindowInterface');
+            {$endIf}
+        end;
+    end
+    else begin
+        {$ifDEF _DEBUG_}
+        DEBUG('ER','Sender==NIL');
+        {$endIf}
+    end;
+
+    //----------------------------------------------------------------------
+    {$ifDEF _DEBUG_}
+    DEBUG('onDeactivate_myCustom','---<<<');
+    {$endIf}
+end;
+
+//------------------------------------------------------------------------------
+
+// ЗАМЕНЯЕМ `onDeactivate` на собственное
+procedure tLazExt_BTF_CodeExplorer._ide_ActiveSrcWND_rePlace_onDeactivate(const wnd:tForm);
+begin
+    if wnd.OnDeactivate<>(@_wnd_onDeactivate_myCustom) then begin
+        {$ifDEF _DEBUG_}
+        DEBUG('rePlace_onDeactivate','rePALCE wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
+        {$endIf}
+       _ide_ActSrc_Wnd_onDeactivate_original:=wnd.OnDeactivate;
+        wnd.OnDeactivate:=@_wnd_onDeactivate_myCustom;
+    end
+    else begin
+        {$ifDEF _DEBUG_}
+        DEBUG('rePlace_onDeactivate','SKIP wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
+        {$endIf}
+    end
+end;
+
+// ВОСТАНАВЛИВАЕМ `onDeactivate` на то что было
+procedure tLazExt_BTF_CodeExplorer._ide_ActiveSrcWND_reStore_onDeactivate(const wnd:tForm);
+begin
+    if wnd.OnDeactivate=(@_wnd_onDeactivate_myCustom) then begin
+        {$ifDEF _DEBUG_}
+        DEBUG('reStore_onDeactivate','wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
+        {$endIf}
+        wnd.OnDeactivate:=_ide_ActSrc_Wnd_onDeactivate_original;
+       _ide_ActSrc_Wnd_onDeactivate_original:=NIL;
+    end
+    else begin
+        {$ifDEF _DEBUG_}
+        DEBUG('reStore_onDeactivate','SKIP wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
         {$endIf}
     end;
 end;
@@ -156,13 +219,13 @@ begin
     if Assigned(tmp) then begin
         tmp.BringToFront;
         result:=true;
-        {$ifOpt D+}
+        {$ifDEF _DEBUG_}
         DEBUG('ActiveSourceWindow','BringToFront OK');
         {$endIf}
     end
     else begin
         result:=false;
-        {$ifOpt D+}
+        {$ifDEF _DEBUG_}
         DEBUG('ActiveSourceWindow','BringToFront ER');
         {$endIf}
     end;
@@ -185,6 +248,7 @@ end;
 
 {%region --- IdeEVENT semEditorActivate --------------------------- /fold}
 
+// основное рабочее событие
 procedure tLazExt_BTF_CodeExplorer._ideEvent_exeEvent_;
 var tmpSourceWindow:TSourceEditorWindowInterface;
 var tmpSourceEditor:TSourceEditorInterface;
@@ -208,172 +272,61 @@ begin
                    _ide_ActiveSrcWND_rePlace_onDeactivate(tmpSourceWindow);
                 end
                 else begin
-                    {$ifOpt D+}
+                    {$ifDEF _DEBUG_}
                     DEBUG('SKIP','already processed');
                     {$endIf}
                 end;
             end
             else begin
                _ideEvent_Window_:=nil;
-                {$ifOpt D+}
+                {$ifDEF _DEBUG_}
                 DEBUG('ER','ActiveEditor is NULL');
                 {$endIf}
             end;
         end
         else begin
-            {$ifOpt D+}
+            {$ifDEF _DEBUG_}
             DEBUG('ER','ActiveSourceWINDOW is NULL');
             {$endIf}
         end;
     end
     else begin
        _ideEvent_Window_:=nil;
-        {$ifOpt D+}
+        {$ifDEF _DEBUG_}
         DEBUG('ER','IDE not ready');
         {$endIf}
     end;
 end;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//------------------------------------------------------------------------------
 
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semEditorActivate(Sender:TObject);
 begin
-    {$ifOpt D+}
+    {$ifDEF _DEBUG_}
     DEBUG('semEditorActivate','--->>>');
     {$endIf}
    _ideEvent_exeEvent_;
-    {$ifOpt D+}
+    {$ifDEF _DEBUG_}
     DEBUG('semEditorActivate','---<<<');
     {$endIf}
 end;
 
-//last:TNotifyEvent;
-
-
-
-
-//_ide_ActSrc_Wnd_onDeactivate_original:TNotifyEvent;
-
-
-procedure tLazExt_BTF_CodeExplorer._wnd_onDeactivate_myCustom(Sender:TObject);
-begin
-    {$ifOpt D+}
-    DEBUG('onDeactivate_myCustom','--->>> Sender$'+IntToHex(PtrUInt(Sender),sizeOf(PtrUInt)*2));
-    {$endIf}
-    if Assigned(Sender) then begin
-        if Sender is TSourceEditorWindowInterface then begin
-           _ideEvent_Window_:=NIL;
-           _ide_ActiveSrcWND_reStore_onDeactivate(tForm(Sender));
-            with TSourceEditorWindowInterface(Sender) do begin
-                if Assigned(OnDeactivate) then OnDeactivate(Sender);
-            end;
-            {$ifOpt D+}
-            DEBUG('onDeactivate_myCustom','OK');
-            {$endIf}
-        end
-        else begin
-            {$ifOpt D+}
-            DEBUG('ER','Sender is NOT TSourceEditorWindowInterface');
-            {$endIf}
-        end;
-    end
-    else begin
-        {$ifOpt D+}
-        DEBUG('ER','Sender==NIL');
-        {$endIf}
-    end;
-    {$ifOpt D+}
-    DEBUG('onDeactivate_myCustom','---<<<');
-    {$endIf}
-end;
-
-//------------------------------------------------------------------------------
-
-procedure tLazExt_BTF_CodeExplorer._ide_ActiveSrcWND_rePlace_onDeactivate(const wnd:tForm);
-begin
-    if wnd.OnDeactivate<>(@_wnd_onDeactivate_myCustom) then begin
-        {$ifOpt D+}
-        DEBUG('rePlace_onDeactivate','rePALCE wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
-        {$endIf}
-       _ide_ActSrc_Wnd_onDeactivate_original:=wnd.OnDeactivate;
-        wnd.OnDeactivate:=@_wnd_onDeactivate_myCustom;
-    end
-    else begin
-        {$ifOpt D+}
-        DEBUG('rePlace_onDeactivate','SKIP wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
-        {$endIf}
-    end
-end;
-
-procedure tLazExt_BTF_CodeExplorer._ide_ActiveSrcWND_reStore_onDeactivate(const wnd:tForm);
-begin
-    if wnd.OnDeactivate=(@_wnd_onDeactivate_myCustom) then begin
-        {$ifOpt D+}
-        DEBUG('reStore_onDeactivate','wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
-        {$endIf}
-        wnd.OnDeactivate:=_ide_ActSrc_Wnd_onDeactivate_original;
-       _ide_ActSrc_Wnd_onDeactivate_original:=NIL;
-    end
-    else begin
-        {$ifOpt D+}
-        DEBUG('reStore_onDeactivate','SKIP wnd$'+IntToHex(PtrUInt(wnd),sizeOf(PtrUInt)*2));
-        {$endIf}
-    end;
-end;
-
-//------------------------------------------------------------------------------
-
-
-
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semWindowFocused(Sender:TObject);
 var tmp:TSourceEditorWindowInterface;
 begin
-    {$ifOpt D+}
+    {$ifDEF _DEBUG_}
     DEBUG('semWindowFocused','--->>>');
     {$endIf}
-    _ideEvent_exeEvent_;
-
-    (*
-    if Assigned(SourceEditorManagerIntf) then begin //< запредельной толщины презерватив
-        tmp:=SourceEditorManagerIntf.ActiveSourceWindow;
-        if Assigned(tmp) then begin
-           _ide_ActiveSrcWND_rePlace_onDeactivate(tmp);
-        end
-        else begin
-            {$ifOpt D+}
-            DEBUG('ER','ActiveSourceWINDOW is NULL');
-            {$endIf}
-        end;
-    end
-    else begin
-        {$ifOpt D+}
-        DEBUG('ER','IDE not ready');
-        {$endIf}
-    end;*)
-
-
-    //if Assigned();
-
-    //SourceEditorManagerIntf.ActiveEditor.;
-
-//    tmp:=SourceEditorManagerIntf.ActiveSourceWindow;
-//   _ideEvent_Editor_:=NIL;
- //  _ideEvent_exeEvent_;
-    {$ifOpt D+}
+   _ideEvent_exeEvent_;
+    {$ifDEF _DEBUG_}
     DEBUG('semWindowFocused','---<<<');
     {$endIf}
 end;
 
-(*procedure tLazExt_BTF_CodeExplorer._ideEvent_semWindowActivate(Sender:TObject);
-begin
-    {$ifOpt D+}
-    DEBUG('IDE','semWindowActivate');
-    {$endIf}
-end;*)
+//------------------------------------------------------------------------------
 
 procedure tLazExt_BTF_CodeExplorer._ideEvent_register_;
 begin
-    //SourceEditorManagerIntf.RegisterChangeEvent(semWindowActivate, @_ideEvent_semWindowActivate);
     SourceEditorManagerIntf.RegisterChangeEvent(semWindowFocused,  @_ideEvent_semWindowFocused);
     SourceEditorManagerIntf.RegisterChangeEvent(semEditorActivate, @_ideEvent_semEditorActivate);
 end;
@@ -381,6 +334,3 @@ end;
 {%endRegion}
 
 end.
-
-//DoBringToFrontFormOrUnit
-//DoShowDesignerFormOfCurrentSrc

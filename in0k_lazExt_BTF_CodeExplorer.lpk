@@ -17,7 +17,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Minor="2"/>
+    <Version Minor="3"/>
     <Files Count="4">
       <Item1>
         <Filename Value="srcPKG\lazExt_BTF_CodeExplorer.pas"/>
