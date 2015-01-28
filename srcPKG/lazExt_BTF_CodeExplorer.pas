@@ -36,6 +36,7 @@ type
   strict private //< обработка событий
     // текущee АКТИВНОЕ окно редактирования
    _ideEvent_Window_:TSourceEditorWindowInterface;
+   _ideEvent_Editor_:TSourceEditorInterface;
     procedure _ideEvent_exeEvent_;
     procedure _ideEvent_semEditorActivate(Sender:TObject);
     procedure _ideEvent_semWindowFocused (Sender:TObject);
@@ -253,8 +254,8 @@ procedure tLazExt_BTF_CodeExplorer._ideEvent_exeEvent_;
 var tmpSourceWindow:TSourceEditorWindowInterface;
 var tmpSourceEditor:TSourceEditorInterface;
 begin
-    {*1> причины использования `_lastProc_SrcEditor_`
-        механизм с `_lastProcessed` приходится использовать из-за того, что
+    {*1> причины использования _ideEvent_Window_ _ideEvent_Editor_
+        механизм с приходится использовать из-за того, что
         при переключение "Вкладок Редактора Исходного Кода" вызов данного
         события происходит аж 3(три) раза. Используем только ПЕРВЫЙ вход.
         -----
@@ -265,8 +266,11 @@ begin
         if Assigned(tmpSourceWindow) then begin
             tmpSourceEditor:=SourceEditorManagerIntf.ActiveEditor;
             if Assigned(tmpSourceEditor) then begin //< чуть потоньше, но тоже толстоват
-                if tmpSourceWindow<>_ideEvent_Window_ then begin
+                if (tmpSourceWindow<>_ideEvent_Window_)
+                 or(tmpSourceEditor<>_ideEvent_Editor_)
+                then begin
                    _ideEvent_Window_:=tmpSourceWindow;
+                   _ideEvent_Editor_:=tmpSourceEditor;
                    _ide_ActiveSrcWND_reStore_onDeactivate(tmpSourceWindow);
                    _do_BTF_CodeExplorer;//< МОЖНО попробовать выполнить ПОЛЕЗНУЮ нагрузку
                    _ide_ActiveSrcWND_rePlace_onDeactivate(tmpSourceWindow);
@@ -278,6 +282,7 @@ begin
                 end;
             end
             else begin
+               _ideEvent_Editor_:=nil;
                _ideEvent_Window_:=nil;
                 {$ifDEF _DEBUG_}
                 DEBUG('ER','ActiveEditor is NULL');
@@ -285,6 +290,8 @@ begin
             end;
         end
         else begin
+           _ideEvent_Editor_:=nil;
+           _ideEvent_Window_:=nil;
             {$ifDEF _DEBUG_}
             DEBUG('ER','ActiveSourceWINDOW is NULL');
             {$endIf}
@@ -303,9 +310,15 @@ end;
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semEditorActivate(Sender:TObject);
 begin
     {$ifDEF _DEBUG_}
-    DEBUG('semEditorActivate','--->>>');
+    DEBUG('semEditorActivate','--->>>'+' sender='+IntToHex(PtrUInt(Sender),sizeOf(PtrUInt)*2));
     {$endIf}
-   _ideEvent_exeEvent_;
+    if assigned(_ideEvent_Window_) //< запускаемся только если окно
+    then _ideEvent_exeEvent_      //  редактирования в ФОКУСЕ
+    else begin
+        {$ifDEF _DEBUG_}
+        DEBUG('SKIP','ActiveSourceWindow is UNfocused');
+        {$endIf}
+    end;
     {$ifDEF _DEBUG_}
     DEBUG('semEditorActivate','---<<<');
     {$endIf}
@@ -315,7 +328,7 @@ procedure tLazExt_BTF_CodeExplorer._ideEvent_semWindowFocused(Sender:TObject);
 var tmp:TSourceEditorWindowInterface;
 begin
     {$ifDEF _DEBUG_}
-    DEBUG('semWindowFocused','--->>>');
+    DEBUG('semWindowFocused','--->>>'+' sender='+IntToHex(PtrUInt(Sender),sizeOf(PtrUInt)*2));
     {$endIf}
    _ideEvent_exeEvent_;
     {$ifDEF _DEBUG_}
