@@ -4,10 +4,25 @@ unit lazExt_BTF_CodeExplorer;
 
 interface
 
-{$define _DEBUG_} //< надо-ли режимДебаг
+{$I in0k_lazExt_BTF_CodeExplorer_INI.ini}
+{$ifDef in0k_lazExt_DEBUG_mode}
+    {$define _DEBUG_}
+{$else}
+    {$undef  _DEBUG_}
+{$endIf}
+{$ifDef _DEBUG_}
+    {$undef  _INLINE_}
+{$else}
+    {$define _INLINE_}
+{$endIf}
 
 uses {$ifDEF _DEBUG_}sysutils, lazExt_BTF_CodeExplorer_debug,{$endIf}
-    SrcEditorIntf, IDECommands,  Classes, Forms;
+    SrcEditorIntf, IDECommands,  Classes, Forms, windows;
+
+
+const
+  cCodeExplorerView_classallName='TCodeExplorerView';
+
 
 type
 
@@ -30,7 +45,11 @@ type
   protected //< полезная нагрузка
     function _do_BTF_CodeExplorer_do_WndCE_OPN:boolean;
     function _do_BTF_CodeExplorer_do_wndSE_BTF:boolean;
-    function _do_BTF_CodeExplorer:boolean;
+    function _do_BTF_CodeExplorer_use_ideLaz:boolean;
+
+
+
+    function _do_BTF_CodeExplorer_use_winAPI:boolean;
   {%endRegion}
   {%region --- IdeEVENT ------------------------------------------- /fold}
   strict private //< обработка событий
@@ -42,6 +61,14 @@ type
     procedure _ideEvent_semWindowFocused (Sender:TObject);
   strict private //< регистрация событий
     procedure _ideEvent_register_;
+  {%endRegion}
+  {%region --- wndCodeExplorer------------------------------------ /fold}
+  strict private
+   _ide_cExplr_wnd_:tForm;
+   _ide_cExplr_wnd_onClose_original:TNotifyEvent;
+    procedure _wnd_onClose_myCustom(Sender:TObject);
+    function  _wndCodeExplorer_findInScreen:TForm;
+  strict private //< регистрация событий
   {%endRegion}
   public
     constructor Create;
@@ -102,8 +129,9 @@ begin
 end;
 
 function tLazExt_BTF_CodeExplorer._IDECommand_OpnCE_execute_:boolean;
+var tmp:TForm;
 begin
-    if Assigned(_IDECommand_OpnCE_) then begin
+    (*if Assigned(_IDECommand_OpnCE_) then begin
         result:=_IDECommand_OpnCE_.Execute(nil);
         {$ifDEF _DEBUG_}
         if result     then DEBUG('CodeExplorer','BringToFront OK')
@@ -115,7 +143,11 @@ begin
         {$ifDEF _DEBUG_}
         if not result then DEBUG('CodeExplorer','BringToFront ER : IDECommand _IDECommand_OpnCE_==nil');
         {$endIf}
-    end;
+    end;*)
+    tmp:=_wndCodeExplorer_findInScreen;
+    if tmp<>nil then tmp.BringToFront;
+
+
 end;
 
 {%endRegion}
@@ -234,7 +266,7 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer:boolean;
+function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_use_ideLaz:boolean;
 begin // Еники Беники, костыли и велики ...
     // вызываем окно `CodeExplorerView`, оно встанет на ПЕРЕДНИЙ план
     // потом на передний план перемещаем окно `ActiveSourceWindow`
@@ -243,6 +275,32 @@ begin // Еники Беники, костыли и велики ...
     result:=_do_BTF_CodeExplorer_do_WndCE_OPN
             and
             _do_BTF_CodeExplorer_do_wndSE_BTF;
+end;
+
+
+function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_use_winAPI:boolean;
+var dwp:HDWP;
+  _wnd_CE:tForm;
+  _wnd_SE:tForm;
+begin
+   _wnd_CE:=_wndCodeExplorer_findInScreen;
+   _wnd_SE:=_ideEvent_Window_;
+    if Assigned(_wnd_CE) and Assigned(_wnd_SE) then begin
+        dwp:=BeginDeferWindowPos(1);
+        //DeferWindowPos(dwp,_wnd_CE.Handle,_wnd_SE.Handle,0,0,0,0, SWP_NOMOVE or SWP_NOSIZE {or SWP_NOACTIVATE});
+        //DeferWindowPos(dwp,_wnd_SE.Handle, HWND_TOP ,0,0,0,0, SWP_NOMOVE or SWP_NOSIZE);
+        DeferWindowPos(dwp,_wnd_CE.Handle,_wnd_SE.Handle,0,0,0,0, SWP_NOMOVE or SWP_NOSIZE or SWP_NOACTIVATE );
+        if EndDeferWindowPos(dwp) then begin
+            {$ifDEF _DEBUG_}
+            DEBUG('ActiveSourceWindow','TRUE');
+            {$endIf}
+        end
+        else begin
+            {$ifDEF _DEBUG_}
+            DEBUG('ActiveSourceWindow','FALSE');
+            {$endIf}
+        end;
+    end;
 end;
 
 {%endRegion}
@@ -272,7 +330,7 @@ begin
                    _ideEvent_Window_:=tmpSourceWindow;
                    _ideEvent_Editor_:=tmpSourceEditor;
                    _ide_ActiveSrcWND_reStore_onDeactivate(tmpSourceWindow);
-                   _do_BTF_CodeExplorer;//< МОЖНО попробовать выполнить ПОЛЕЗНУЮ нагрузку
+                   _do_BTF_CodeExplorer_use_winAPI;//< МОЖНО попробовать выполнить ПОЛЕЗНУЮ нагрузку
                    _ide_ActiveSrcWND_rePlace_onDeactivate(tmpSourceWindow);
                 end
                 else begin
@@ -334,6 +392,7 @@ begin
     {$ifDEF _DEBUG_}
     DEBUG('semWindowFocused','---<<<');
     {$endIf}
+    _wndCodeExplorer_findInScreen;
 end;
 
 //------------------------------------------------------------------------------
@@ -345,5 +404,26 @@ begin
 end;
 
 {%endRegion}
+
+{%region --- wndCodeExplorer--------------------------------------- /fold}
+
+function tLazExt_BTF_CodeExplorer._wndCodeExplorer_findInScreen:TForm;
+var i:integer;
+  tmp:TForm;
+begin
+    result:=nil;
+    for i:=0 to Screen.FormCount-1 do begin
+        tmp:=Screen.Forms[i];
+        if tmp.ClassNameIs(cCodeExplorerView_classallName) then begin
+            result:=tmp;
+            {$ifDEF _DEBUG_}
+            DEBUG('FIND','CodeExplorerView');
+            {$endIf}
+        end;
+    end;
+end;
+
+{%endRegion}
+
 
 end.
