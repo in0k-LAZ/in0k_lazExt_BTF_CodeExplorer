@@ -64,10 +64,9 @@ type
   {%endRegion}
   {%region --- wndCodeExplorer------------------------------------ /fold}
   strict private
-   _ide_Window_CEV_:tForm
-   _ide_Window_CEV_onClose_original_:
-    procedure _CEV_onClose_myCustom_
-    procedure _ideWnd_codeExplr_onClose_myCustom(Sender:TObject);
+   _ide_Window_CEV_:tForm;                            //< найденное окно
+   _ide_Window_CEV_onClose_original_:TNotifyEvent;    //< его событие при выходе
+    procedure _CEV_onClose_myCustom_(Sender:TObject); //< моя подстава
     function  _wndCodeExplorer_findInScreen:TForm;
   strict private //< регистрация событий
   {%endRegion}
