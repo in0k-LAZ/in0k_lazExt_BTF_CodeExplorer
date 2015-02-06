@@ -4,7 +4,7 @@ unit lazExt_BTF_CodeExplorer;
 
 interface
 
-{$I in0k_lazExt_BTF_CodeExplorer_INI.ini}
+{$I in0k_lazExt_BTF_CodeExplorer_INI.inc}
 
 //-----
 
@@ -80,6 +80,7 @@ type
     procedure _CEV_reStore_onClose(const wnd:tForm);
     //---
     function  _CEV_findInScreen:TForm;
+    procedure _CEV_PREPARE;
   strict private //< регистрация событий
   {$endIf}
   {%endRegion}
@@ -324,6 +325,7 @@ end;
 function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_use_winAPI:boolean;
 var dwp:HDWP;
 begin
+   _CEV_PREPARE;
     if Assigned(_ide_Window_CEV_) and Assigned(_ide_Window_SEW_) then begin
         dwp:=BeginDeferWindowPos(1);
         DeferWindowPos(dwp,_ide_Window_CEV_.Handle,_ide_Window_SEW_.Handle,0,0,0,0, SWP_NOMOVE or SWP_NOSIZE or SWP_NOACTIVATE );
@@ -382,6 +384,16 @@ begin
             DEBUG('CEV','FOUND '+cWndCEV_className+_addr2txt_(f));
             {$endIf}
         end;
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_BTF_CodeExplorer._CEV_PREPARE;
+begin
+    if not Assigned(_ide_Window_CEV_) then begin
+       _ide_Window_CEV_:=_CEV_findInScreen;
+       _CEV_rePlace_onClose(_ide_Window_CEV_);
     end;
 end;
 

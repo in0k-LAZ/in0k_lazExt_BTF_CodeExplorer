@@ -4,7 +4,9 @@ unit lazExt_BTF_CodeExplorer_debug;
 
 interface
 
-uses sysutils, in0kLazExt_wndDBG;
+{$I in0k_lazExt_BTF_CodeExplorer_INI.inc}
+
+uses sysutils, lazExt_BTF_CodeExplorer_wndDBG;
 
 procedure DEBUG(const msgTYPE,msgTEXT:string);
 

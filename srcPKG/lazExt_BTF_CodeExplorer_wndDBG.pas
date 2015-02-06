@@ -1,12 +1,11 @@
-unit in0kLazExt_wndDBG;
+unit lazExt_BTF_CodeExplorer_wndDBG;
 
 {$mode objfpc}{$H+}
 
 interface
 
 uses MenuIntf,
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ActnList;
+  SysUtils, Forms, StdCtrls, ActnList;
 
 procedure RegisterInIDE(const Name,Caption:string);
 
@@ -25,8 +24,6 @@ type
     procedure Message(const TextMSG:string);
     procedure Message(const msgTYPE,msgTEXT:string);
   end;
-
-var in0kLazExtWndDBG:Tin0kLazExtWndDBG;
 
 procedure in0kLazExtWndDBG_SHOW;
 procedure in0kLazExtWndDBG_Message(const TextMSG:string);
@@ -47,6 +44,8 @@ begin
 end;
 
 {%endregion}
+
+var in0kLazExtWndDBG:Tin0kLazExtWndDBG;
 
 procedure in0kLazExtWndDBG_SHOW;
 begin
