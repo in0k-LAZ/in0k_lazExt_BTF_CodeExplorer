@@ -32,9 +32,6 @@ interface
 uses {$ifDEF _DEBUG_}sysutils, lazExt_BTF_CodeExplorer_debug,{$endIf}
     SrcEditorIntf, IDECommands,  Classes, Forms, windows;
 
-
-
-
 type
 
  tLazExt_BTF_CodeExplorer=class
@@ -67,7 +64,7 @@ type
     function _do_BTF_CodeExplorer_use_ideLaz:boolean; {$ifDEF _INLINE_}inline;{$endIf}
     {$endIf}
     {$ifDef _lazExt_BTF_CodeExplorer_API_003_}
-    function _do_BTF_CodeExplorer_use_winAPI:boolean; {$ifDEF _INLINE_}inline;{$endIf}
+    function _do_BTF_CodeExplorer_use_winAPI:boolean; platform; {$ifDEF _INLINE_}inline;{$endIf}
     {$endIf}
   {%endRegion}
   {%region --- ide_Window_CEV : API_004 --------------------------- /fold}
@@ -106,6 +103,9 @@ constructor tLazExt_BTF_CodeExplorer.Create;
 begin
     {$ifDef _lazExt_BTF_CodeExplorer_API_001_}
    _IDECommand_OpnCEV_:=NIL;
+    {$endIf}
+    {$ifDef _lazExt_BTF_CodeExplorer_API_004_}
+   _ide_Window_CEV_:=NIL;
     {$endIf}
    _ide_Window_SEW_ :=nil;
 end;
@@ -395,6 +395,9 @@ begin
        _ide_Window_CEV_:=_CEV_findInScreen;
        _CEV_rePlace_onClose(_ide_Window_CEV_);
     end;
+    {$ifDef lazExt_BTF_CodeExplorer_Auto_SHOW}
+    {todo:ДЕЛАТЬ}
+    {$endIf}
 end;
 
 //------------------------------------------------------------------------------
