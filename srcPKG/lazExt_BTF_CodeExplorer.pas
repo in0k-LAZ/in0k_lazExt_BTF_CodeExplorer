@@ -186,7 +186,7 @@ end;
 procedure tLazExt_BTF_CodeExplorer._SEW_onDeactivate_myCustom(Sender:TObject);
 begin
     {$ifDEF _DEBUG_}
-    DEBUG('_SEW_onDeactivate_myCustom','--->>> Sender'+_addr2txt_(Sender));
+    DEBUG('_SEW_onDeactivate_myCustom','--->>> Sender'+addr2txt(Sender));
     {$endIf}
 
     // отмечаем что ВЫШЛИ из окна
@@ -199,7 +199,7 @@ begin
             with TSourceEditorWindowInterface(Sender) do begin
                 if Assigned(OnDeactivate) then OnDeactivate(Sender);
                 {$ifDEF _DEBUG_}
-                DEBUG('OK','TSourceEditorWindowInterface('+_addr2txt_(sender)+').OnDeactivate executed');
+                DEBUG('OK','TSourceEditorWindowInterface('+addr2txt(sender)+').OnDeactivate executed');
                 {$endIf}
             end;
         end
@@ -229,12 +229,12 @@ begin
        _ide_Window_SEW_onDeactivate_original:=wnd.OnDeactivate;
         wnd.OnDeactivate:=@_SEW_onDeactivate_myCustom;
         {$ifDEF _DEBUG_}
-        DEBUG('_SEW_rePlace_onDeactivate','rePALCE wnd'+_addr2txt_(wnd));
+        DEBUG('_SEW_rePlace_onDeactivate','rePALCE wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
         {$ifDEF _DEBUG_}
-        DEBUG('_SEW_rePlace_onDeactivate','SKIP wnd'+_addr2txt_(wnd));
+        DEBUG('_SEW_rePlace_onDeactivate','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end
 end;
@@ -246,12 +246,12 @@ begin
         wnd.OnDeactivate:=_ide_Window_SEW_onDeactivate_original;
        _ide_Window_SEW_onDeactivate_original:=NIL;
         {$ifDEF _DEBUG_}
-        DEBUG('_SEW_reStore_onDeactivate','wnd'+_addr2txt_(wnd));
+        DEBUG('_SEW_reStore_onDeactivate','wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
         {$ifDEF _DEBUG_}
-        DEBUG('_SEW_reStore_onDeactivate','SKIP wnd'+_addr2txt_(wnd));
+        DEBUG('_SEW_reStore_onDeactivate','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end;
 end;
@@ -376,13 +376,14 @@ begin
     for i:=0 to Screen.FormCount-1 do begin
         f:=Screen.Forms[i];
         {$ifDEF _DEBUG_}
-        DEBUG('CEV','onFind '+f.ClassName);
+        DEBUG('CEV','Find '+f.ClassName);
         {$endIf}
         if f.ClassNameIs(cWndCEV_className) then begin
             result:=f;
             {$ifDEF _DEBUG_}
-            DEBUG('CEV','FOUND '+cWndCEV_className+_addr2txt_(f));
+            DEBUG('CEV','FOUND '+cWndCEV_className+addr2txt(f));
             {$endIf}
+            break;
         end;
     end;
 end;
@@ -405,7 +406,7 @@ end;
 procedure tLazExt_BTF_CodeExplorer._CEV_onClose_myCustom_(Sender:TObject; var CloseAction:TCloseAction);
 begin
     {$ifDEF _DEBUG_}
-    DEBUG('_CEV_onClose_myCustom_','--->>> Sender'+_addr2txt_(Sender));
+    DEBUG('_CEV_onClose_myCustom_','--->>> Sender'+addr2txt(Sender));
     {$endIf}
 
     // отмечаем что ВЫШЛИ из окна
@@ -417,7 +418,7 @@ begin
             with tForm(Sender) do begin
                 if Assigned(OnClose) then OnClose(Sender,CloseAction);
                 {$ifDEF _DEBUG_}
-                DEBUG('OK','TForm('+_addr2txt_(sender)+').onClose executed');
+                DEBUG('OK','TForm('+addr2txt(sender)+').onClose executed');
                 {$endIf}
             end;
         end
@@ -446,12 +447,12 @@ begin
        _ide_Window_CEV_onClose_original_:=wnd.OnClose;
         wnd.OnClose:=@_CEV_onClose_myCustom_;
         {$ifDEF _DEBUG_}
-        DEBUG('_CEV_rePlace_onClose','rePALCE wnd'+_addr2txt_(wnd));
+        DEBUG('_CEV_rePlace_onClose','rePALCE wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
         {$ifDEF _DEBUG_}
-        DEBUG('_CEV_rePlace_onClose','SKIP wnd'+_addr2txt_(wnd));
+        DEBUG('_CEV_rePlace_onClose','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end
 end;
@@ -462,12 +463,12 @@ begin
         wnd.OnClose:=_ide_Window_CEV_onClose_original_;
        _ide_Window_CEV_onClose_original_:=NIL;
         {$ifDEF _DEBUG_}
-        DEBUG('_CEV_reStore_onClose','wnd'+_addr2txt_(wnd));
+        DEBUG('_CEV_reStore_onClose','wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
         {$ifDEF _DEBUG_}
-        DEBUG('_CEV_reStore_onClose','SKIP wnd'+_addr2txt_(wnd));
+        DEBUG('_CEV_reStore_onClose','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end;
 end;
@@ -523,7 +524,7 @@ end;
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semEditorActivate(Sender:TObject);
 begin
     {$ifDEF _DEBUG_}
-    DEBUG('ideEVENT:semEditorActivate','--->>>'+' sender'+_addr2txt_(Sender));
+    DEBUG('ideEVENT:semEditorActivate','--->>>'+' sender'+addr2txt(Sender));
     {$endIf}
 
     if assigned(_ide_Window_SEW_) //< запускаемся только если окно
@@ -542,7 +543,7 @@ end;
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semWindowFocused(Sender:TObject);
 begin
     {$ifDEF _DEBUG_}
-    DEBUG('ideEVENT:semWindowFocused','--->>>'+' sender'+_addr2txt_(Sender));
+    DEBUG('ideEVENT:semWindowFocused','--->>>'+' sender'+addr2txt(Sender));
     {$endIf}
 
     if Assigned(Sender) and (Sender is TSourceEditorWindowInterface) then begin

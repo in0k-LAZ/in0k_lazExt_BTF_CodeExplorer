@@ -8,8 +8,7 @@ interface
 
 uses
   in0k_lazExt_BTF_CodeExplorer_REG, lazExt_BTF_CodeExplorer, 
-  lazExt_BTF_CodeExplorer_debug, lazExt_BTF_CodeExplorer_wndDBG, 
-  LazarusPackageIntf;
+  lazExt_BTF_CodeExplorer_debug, LazarusPackageIntf;
 
 implementation
 

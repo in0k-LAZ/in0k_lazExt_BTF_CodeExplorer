@@ -1,12 +1,13 @@
-object in0kLazExtWndDBG: Tin0kLazExtWndDBG
+object lazExt_BTF_CodeExplorer_wndDBG: TlazExt_BTF_CodeExplorer_wndDBG
   Left = 379
   Height = 240
   Top = 129
   Width = 320
-  Caption = 'in0kLazExtWndDBG'
+  Caption = 'lazExt_BTF_CodeExplorer_wndDBG'
   ClientHeight = 240
   ClientWidth = 320
   OnClose = FormClose
+  OnCreate = FormCreate
   LCLVersion = '1.2.6.0'
   object Memo1: TMemo
     AnchorSideLeft.Control = Owner
@@ -47,6 +48,19 @@ object in0kLazExtWndDBG: Tin0kLazExtWndDBG
     Anchors = [akRight, akBottom]
     TabOrder = 2
   end
+  object CheckBox1: TCheckBox
+    AnchorSideLeft.Control = Button1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Button1
+    AnchorSideTop.Side = asrCenter
+    Left = 77
+    Height = 19
+    Top = 218
+    Width = 90
+    Action = a_StayOnTop
+    BorderSpacing.Left = 2
+    TabOrder = 3
+  end
   object ActionList1: TActionList
     left = 257
     top = 40
@@ -57,6 +71,11 @@ object in0kLazExtWndDBG: Tin0kLazExtWndDBG
     object a_Save: TAction
       Caption = 'Save'
       Enabled = False
+    end
+    object a_StayOnTop: TAction
+      Caption = 'a_StayOnTop'
+      OnExecute = a_StayOnTopExecute
+      OnUpdate = a_StayOnTopUpdate
     end
   end
 end

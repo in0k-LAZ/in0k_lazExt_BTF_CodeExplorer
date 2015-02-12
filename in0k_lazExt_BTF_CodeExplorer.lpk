@@ -18,7 +18,7 @@
       </Other>
     </CompilerOptions>
     <Version Minor="4"/>
-    <Files Count="5">
+    <Files Count="4">
       <Item1>
         <Filename Value="in0k_lazExt_BTF_CodeExplorer_INI.inc"/>
         <Type Value="Text"/>
@@ -36,10 +36,6 @@
         <Filename Value="srcPKG\lazExt_BTF_CodeExplorer_debug.pas"/>
         <UnitName Value="lazExt_BTF_CodeExplorer_debug"/>
       </Item4>
-      <Item5>
-        <Filename Value="srcPKG\lazExt_BTF_CodeExplorer_wndDBG.pas"/>
-        <UnitName Value="lazExt_BTF_CodeExplorer_wndDBG"/>
-      </Item5>
     </Files>
     <Type Value="DesignTime"/>
     <RequiredPkgs Count="2">

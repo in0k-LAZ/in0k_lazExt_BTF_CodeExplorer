@@ -1,16 +1,23 @@
 
 // определяем режим ДЕБАГ
-{$define lazExt_BTF_CodeExplorer_DEBUG_mode}
+{.$define lazExt_BTF_CodeExplorer_DEBUG_mode}
 
 // режим работы через winApi
 {$define lazExt_BTF_CodeExplorer_WinAPI_mode}
-{$ifdef lazExt_BTF_CodeExplorer_WinAPI_mode}
-    // авто открытие окна
-    {.$define lazExt_BTF_CodeExplorer_Auto_SHOW}
+
+// авто открытие окна {todo}
+{.$define lazExt_BTF_CodeExplorer_Auto_SHOW}
+
+
+//------------------------------------------------------------------------------
+
+{$IFDEF Windows}
+{$else}
+    {$undef lazExt_BTF_CodeExplorer_WinAPI_mode}
 {$endIf}
 
 
-
+// по идее это переместить надо
 {$ifDef lazExt_BTF_CodeExplorer_DEBUG_mode}
     {$define _DEBUG_}
 {$else}
