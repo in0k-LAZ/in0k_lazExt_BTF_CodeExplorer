@@ -1,13 +1,13 @@
-unit in0k_lazExt_BTF_CodeExplorer_REG;
+unit in0k_lazExt_aBTF_CodeExplorer_REG;
 
 {$mode objfpc}{$H+}
 
 interface
 
-{$I in0k_lazExt_BTF_CodeExplorer_INI.inc}
+{$I in0k_lazExt_aBTF_CodeExplorer_INI.inc}
 
-uses {$ifDef _DEBUG_}lazExt_BTF_CodeExplorer_DEBUG,{$endIf}
-     lazExt_BTF_CodeExplorer;
+uses {$ifDef lazExt_aBTF_CodeExplorer_DEBUG_mode}lazExt_aBTF_CodeExplorer_DEBUG,{$endIf}
+     lazExt_aBTF_CodeExplorer;
 
 procedure REGISTER;
 
@@ -19,8 +19,8 @@ procedure REGISTER;
 begin
    _BTF_CodeExplorer_:=tLazExt_BTF_CodeExplorer.Create;
    _BTF_CodeExplorer_.RegisterInIdeLAZARUS;
-    {$ifDef _DEBUG_}
-    lazExt_BTF_CodeExplorer_DEBUG.RegisterInIDE;
+    {$ifDef lazExt_aBTF_CodeExplorer_DEBUG_mode}
+    lazExt_aBTF_CodeExplorer_DEBUG.RegisterInIdeLAZARUS;
     {$endIf}
 end;
 

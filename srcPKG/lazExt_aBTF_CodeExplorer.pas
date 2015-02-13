@@ -1,42 +1,87 @@
-unit lazExt_BTF_CodeExplorer;
+unit lazExt_aBTF_CodeExplorer;
 
 {$mode objfpc}{$H+}
 
 interface
 
-{$I in0k_lazExt_BTF_CodeExplorer_INI.inc}
+{$I in0k_lazExt_aBTF_CodeExplorer_INI.inc}
 
 //-----
 
-{$undef _lazExt_BTF_CodeExplorer_API_001_}
-{$undef _lazExt_BTF_CodeExplorer_API_002_}
-{$undef _lazExt_BTF_CodeExplorer_API_003_}
-{$undef _lazExt_BTF_CodeExplorer_API_004_}
+{$undef _lazExt_aBTF_CodeExplorer_API_001_}
+{$undef _lazExt_aBTF_CodeExplorer_API_002_}
+{$undef _lazExt_aBTF_CodeExplorer_API_003_}
+{$undef _lazExt_aBTF_CodeExplorer_API_004_}
+{$undef _lazExt_aBTF_CodeExplorer_API_005_}
 
 //----
-{$ifDef lazExt_BTF_CodeExplorer_Auto_SHOW}
-    {$define _lazExt_BTF_CodeExplorer_API_001_}
+{$ifDef lazExt_aBTF_CodeExplorer_Auto_SHOW}
+    {$define _lazExt_aBTF_CodeExplorer_API_001_}
 {$endif}
-{$ifDef lazExt_BTF_CodeExplorer_WinAPI_mode}
+{$ifDef lazExt_aBTF_CodeExplorer_WinAPI_mode}
     //---- под Виндой
-    {$undef  _lazExt_BTF_CodeExplorer_API_002_}
-    {$define _lazExt_BTF_CodeExplorer_API_003_}
-    {$define _lazExt_BTF_CodeExplorer_API_004_}
+    {$undef  _lazExt_aBTF_CodeExplorer_API_002_}
+    {$define _lazExt_aBTF_CodeExplorer_API_003_}
+    {$ifdef lazExt_aBTF_CodeExplorer_cacheCodeExplorer}
+    {$define _lazExt_aBTF_CodeExplorer_API_004_}
+    {$endif}
+    {$define _lazExt_aBTF_CodeExplorer_API_005_}
 {$else}
     //---- стандартный (через IDE Lazarus) метод работы
-    {$define _lazExt_BTF_CodeExplorer_API_002_}
-    {$define _lazExt_BTF_CodeExplorer_API_001_}
+    {$define _lazExt_aBTF_CodeExplorer_API_002_}
+    {$define _lazExt_aBTF_CodeExplorer_API_001_}
 {$endif}
 
+{$hint 'SETTINGs info: ---------------------------->>>'}
+{$ifDef lazExt_aBTF_CodeExplorer_DEBUG_mode}
+    {$hint 'lazExt_aBTF_CodeExplorer_DEBUG_mode On'}
+{$else}
+    {$hint 'lazExt_aBTF_CodeExplorer_DEBUG_mode OFF'}
+{$endif}
+{$ifDef lazExt_aBTF_CodeExplorer_Auto_SHOW}
+    {$hint 'lazExt_aBTF_CodeExplorer_Auto_SHOW On'}
+{$else}
+    {$hint 'lazExt_aBTF_CodeExplorer_Auto_SHOW OFF'}
+{$endif}
+{$ifDef lazExt_aBTF_CodeExplorer_WinAPI_mode}
+    {$hint 'lazExt_aBTF_CodeExplorer_WinAPI_mode On'}
+{$else}
+    {$hint 'lazExt_aBTF_CodeExplorer_WinAPI_mode OFF'}
+{$endif}
+{$ifDef lazExt_aBTF_CodeExplorer_cacheCodeExplorer}
+    {$hint 'lazExt_aBTF_CodeExplorer_cacheCodeExplorer On'}
+{$else}
+    {$hint 'lazExt_aBTF_CodeExplorer_cacheCodeExplorer OFF'}
+{$endif}
+{$hint '<<<---------------------------------------->>>'}
 
-uses {$ifDEF _DEBUG_}sysutils, lazExt_BTF_CodeExplorer_debug,{$endIf}
-    SrcEditorIntf, IDECommands,  Classes, Forms, windows;
+
+{$ifDef lazExt_aBTF_CodeExplorer_DEBUG_mode}
+    {$define _DEBUG_}
+{$else}
+    {$undef  _DEBUG_}
+{$endIf}
+{$ifDef _DEBUG_}
+    {$undef  _INLINE_}
+{$else}
+    {$define _INLINE_}
+{$endIf}
+
+
+uses {$ifDEF lazExt_aBTF_CodeExplorer_DEBUG_mode}
+        sysutils, Dialogs, lazExt_aBTF_CodeExplorer_DEBUG,
+     {$endIf}
+     {$ifDEF lazExt_aBTF_CodeExplorer_WinAPI_mode}
+        windows,
+     {$endIf}
+     SrcEditorIntf, IDECommands,
+     Classes, Forms;
 
 type
 
  tLazExt_BTF_CodeExplorer=class
   {%region --- CodeExplorer Window IDECommand --------------------- /fold}
-  {$ifDef _lazExt_BTF_CodeExplorer_API_001_}
+  {$ifDef _lazExt_aBTF_CodeExplorer_API_001_}
   strict private
    _IDECommand_OpnCEV_:TIDECommand; //< это комманда для открытия
     procedure _IDECommand_OpnCEV_FIND_;
@@ -51,34 +96,40 @@ type
     procedure _SEW_onDeactivate_myCustom(Sender:TObject); //< моя подстава
     procedure _SEW_rePlace_onDeactivate(const wnd:tForm);
     procedure _SEW_reStore_onDeactivate(const wnd:tForm);
-    //---
+  private
     procedure _SEW_SET(const wnd:TSourceEditorWindowInterface);
   {%endRegion}
   {%region --- ВСЯ СУТь ------------------------------------------- /fold}
   protected
     function _do_BTF_CodeExplorer_:boolean;
   protected
-    {$ifDef _lazExt_BTF_CodeExplorer_API_002_}
-    function _do_BTF_CodeExplorer_do_WndCE_OPN:boolean;
+    {$ifDef _lazExt_aBTF_CodeExplorer_API_002_}
+    function _do_BTF_CodeExplorer_do_wndCE_OPN:boolean;
     function _do_BTF_CodeExplorer_do_wndSE_BTF:boolean;
     function _do_BTF_CodeExplorer_use_ideLaz:boolean; {$ifDEF _INLINE_}inline;{$endIf}
     {$endIf}
-    {$ifDef _lazExt_BTF_CodeExplorer_API_003_}
-    function _do_BTF_CodeExplorer_use_winAPI:boolean; platform; {$ifDEF _INLINE_}inline;{$endIf}
+    {$ifDef _lazExt_aBTF_CodeExplorer_API_003_}
+    function _do_BTF_CodeExplorer_use_winAPI:boolean; {$ifDEF _INLINE_}inline;{$endIf}
     {$endIf}
   {%endRegion}
   {%region --- ide_Window_CEV : API_004 --------------------------- /fold}
-  {$ifDef _lazExt_BTF_CodeExplorer_API_004_}
+  {$ifDef _lazExt_aBTF_CodeExplorer_API_004_}
   strict private
    _ide_Window_CEV_:tForm;                        //< найденное окно
    _ide_Window_CEV_onClose_original_:TCloseEvent; //< его событие при выходе
     procedure _CEV_onClose_myCustom_(Sender:TObject; var CloseAction:TCloseAction);
     procedure _CEV_rePlace_onClose(const wnd:tForm);
     procedure _CEV_reStore_onClose(const wnd:tForm);
-    //---
-    function  _CEV_findInScreen:TForm;
-    procedure _CEV_PREPARE;
-  strict private //< регистрация событий
+  private
+    procedure _CEV_SET_(const wnd:tForm);
+  {$endIf}
+  {%endRegion}
+  {%region --- ide_Window_CEV : API_005 --------------------------- /fold}
+  {$ifDef _lazExt_aBTF_CodeExplorer_API_005_}
+  strict private
+    function  _CEV_find_:TForm;
+  private
+    function  _CEV_GET:TForm;
   {$endIf}
   {%endRegion}
   {%region --- IdeEVENT ------------------------------------------- /fold}
@@ -99,15 +150,28 @@ type
 
 implementation
 
+
+{$ifDEF _DEBUG_}
+
+const
+   _cPleaseReport_=
+        LineEnding+
+        'EN: Please report this error to the developer.'+LineEnding+
+        'RU: пожалуйста, сообщите об этой ошибке разработчику.'+
+        LineEnding;
+{$endIf}
+
+
+
 constructor tLazExt_BTF_CodeExplorer.Create;
 begin
-    {$ifDef _lazExt_BTF_CodeExplorer_API_001_}
+    {$ifDef _lazExt_aBTF_CodeExplorer_API_001_}
    _IDECommand_OpnCEV_:=NIL;
     {$endIf}
-    {$ifDef _lazExt_BTF_CodeExplorer_API_004_}
+    {$ifDef _lazExt_aBTF_CodeExplorer_API_004_}
    _ide_Window_CEV_:=NIL;
     {$endIf}
-   _ide_Window_SEW_ :=nil;
+   _ide_Window_SEW_:=NIL;
 end;
 
 destructor tLazExt_BTF_CodeExplorer.DESTROY;
@@ -128,7 +192,7 @@ end;
     - написать заявку на добавление в IDEIntf или самому сделать правку
 }
 
-{$ifDef _lazExt_BTF_CodeExplorer_API_001_}
+{$ifDef _lazExt_aBTF_CodeExplorer_API_001_}
 
 {info: жестко спрятанное Окно.
     присутствует ТОЛЬКО в исходниках `$(LazarusDir)/ide/codeexplorer.pas`
@@ -260,12 +324,17 @@ end;
 
 procedure tLazExt_BTF_CodeExplorer._SEW_SET(const wnd:TSourceEditorWindowInterface);
 begin
-    if not Assigned(_ide_Window_SEW_) then begin
+    if wnd<>_ide_Window_SEW_ then begin
+        if Assigned(_ide_Window_SEW_)
+        then begin
+           _SEW_reStore_onDeactivate(_ide_Window_SEW_);
+            {$ifDEF _DEBUG_}
+            DEBUG('ERROR','_SEW_SET inline var _ide_Window_SEW_<>NIL');
+            ShowMessage('_SEW_SET inline var _ide_Window_SEW_<>NIL'+_cPleaseReport_);
+            {$endIf}
+        end;
        _SEW_rePlace_onDeactivate(wnd);
        _ide_Window_SEW_:=wnd;
-    end
-    else begin
-       _ide_Window_SEW_:=nil;
     end;
 end;
 
@@ -273,10 +342,10 @@ end;
 
 {%region --- ВСЯ СУТь --------------------------------------------- /fold}
 
-{$ifDef _lazExt_BTF_CodeExplorer_API_002_}
+{$ifDef _lazExt_aBTF_CodeExplorer_API_002_}
 
 // открыть и вытащить на передний план окно `CodeExplorerView`
-function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_do_WndCE_OPN:boolean;
+function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_do_wndCE_OPN:boolean;
 begin
     result:=_IDECommand_OpnCEV_present_ and _IDECommand_OpnCEV_execute_;
 end;
@@ -309,33 +378,34 @@ begin // Еники Беники, костыли и велики ...
     // потом на передний план перемещаем окно `ActiveSourceWindow`
     //---
     // все это приводит к излишним дерганиям и как-то через Ж.
-   _SEW_reStore_onDeactivate(tmpSourceWindow);
-    result:=_do_BTF_CodeExplorer_do_WndCE_OPN
+   _SEW_reStore_onDeactivate(_ide_Window_SEW_);
+    result:=_do_BTF_CodeExplorer_do_wndCE_OPN
             and
             _do_BTF_CodeExplorer_do_wndSE_BTF;
-   _SEW_rePlace_onDeactivate(tmpSourceWindow);
+   _SEW_rePlace_onDeactivate(_ide_Window_SEW_);
 end;
 
 {$endIf}
 
 //==============================================================================
 
-{$ifDef _lazExt_BTF_CodeExplorer_API_003_}
+{$ifDef _lazExt_aBTF_CodeExplorer_API_003_}
 
 function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_use_winAPI:boolean;
 var dwp:HDWP;
+    cev:tForm;
 begin
-   _CEV_PREPARE;
-    if Assigned(_ide_Window_CEV_) and Assigned(_ide_Window_SEW_) then begin
+    cev:=_CEV_GET;
+    if Assigned(cev) and Assigned(_ide_Window_SEW_) then begin
         dwp:=BeginDeferWindowPos(1);
-        DeferWindowPos(dwp,_ide_Window_CEV_.Handle,_ide_Window_SEW_.Handle,0,0,0,0, SWP_NOMOVE or SWP_NOSIZE or SWP_NOACTIVATE );
+        DeferWindowPos(dwp,cev.Handle,_ide_Window_SEW_.Handle,0,0,0,0,SWP_NOMOVE or SWP_NOSIZE or SWP_NOACTIVATE);
         result:=EndDeferWindowPos(dwp);
     end
     else begin
         result:=false;
         {$ifDEF _DEBUG_}
-        if not Assigned(_ide_Window_CEV_) then DEBUG('EVENT','_ide_Window_CEV_==nil');
         if not Assigned(_ide_Window_SEW_) then DEBUG('EVENT','_ide_Window_SEW_==nil');
+        if not Assigned(cev)              then DEBUG('EVENT','_ide_Window_CEV_==nil');
         {$endIf}
     end;
 end;
@@ -346,7 +416,7 @@ end;
 
 function tLazExt_BTF_CodeExplorer._do_BTF_CodeExplorer_:boolean;
 begin
-    {$ifDef lazExt_BTF_CodeExplorer_WinAPI_mode}
+    {$ifDef lazExt_aBTF_CodeExplorer_WinAPI_mode}
         result:=_do_BTF_CodeExplorer_use_winAPI;
     {$else} //< "стандартными" средствами IDE lazarus
         result:=_do_BTF_CodeExplorer_use_ideLaz;
@@ -361,47 +431,7 @@ end;
 
 {%region --- ide_Window_CEV : API_004 ----------------------------- /fold}
 
-{$ifDef _lazExt_BTF_CodeExplorer_API_004_}
-
-const //< тут возможно придется определять относительно ВЕРСИИ ЛАЗАРУСА
-  cWndCEV_className='TCodeExplorerView';
-
-// исчем ЭКЗЕМПЛЯР окна
-//  поиск по ИМЕНИ класса в хранилище открытых окон `Screen.Form`
-function tLazExt_BTF_CodeExplorer._CEV_findInScreen:TForm;
-var i:integer;
-    f:TForm;
-begin
-    result:=nil;
-    for i:=0 to Screen.FormCount-1 do begin
-        f:=Screen.Forms[i];
-        {$ifDEF _DEBUG_}
-        DEBUG('CEV','Find '+f.ClassName);
-        {$endIf}
-        if f.ClassNameIs(cWndCEV_className) then begin
-            result:=f;
-            {$ifDEF _DEBUG_}
-            DEBUG('CEV','FOUND '+cWndCEV_className+addr2txt(f));
-            {$endIf}
-            break;
-        end;
-    end;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure tLazExt_BTF_CodeExplorer._CEV_PREPARE;
-begin
-    if not Assigned(_ide_Window_CEV_) then begin
-       _ide_Window_CEV_:=_CEV_findInScreen;
-       _CEV_rePlace_onClose(_ide_Window_CEV_);
-    end;
-    {$ifDef lazExt_BTF_CodeExplorer_Auto_SHOW}
-    {todo:ДЕЛАТЬ}
-    {$endIf}
-end;
-
-//------------------------------------------------------------------------------
+{$ifDef _lazExt_aBTF_CodeExplorer_API_004_}
 
 procedure tLazExt_BTF_CodeExplorer._CEV_onClose_myCustom_(Sender:TObject; var CloseAction:TCloseAction);
 begin
@@ -409,28 +439,35 @@ begin
     DEBUG('_CEV_onClose_myCustom_','--->>> Sender'+addr2txt(Sender));
     {$endIf}
 
-    // отмечаем что ВЫШЛИ из окна
-   _ide_Window_CEV_:=NIL;
-    // восстановить событие `onDeactivate` на исходное, и выполнияем его
-    if Assigned(Sender) then begin
-        if Sender is TForm then begin
-           _CEV_reStore_onClose(tForm(Sender));
-            with tForm(Sender) do begin
-                if Assigned(OnClose) then OnClose(Sender,CloseAction);
+    if Sender=_ide_Window_CEV_ then begin
+        // отмечаем что ВЫШЛИ из окна
+       _ide_Window_CEV_:=NIL;
+        // восстановить событие `onDeactivate` на исходное, и выполнияем его
+        if Assigned(Sender) then begin
+            if Sender is TForm then begin
+               _CEV_reStore_onClose(tForm(Sender));
+                with tForm(Sender) do begin
+                    if Assigned(OnClose) then OnClose(Sender,CloseAction);
+                    {$ifDEF _DEBUG_}
+                    DEBUG('OK','TForm('+addr2txt(sender)+').onClose executed');
+                    {$endIf}
+                end;
+            end
+            else begin
                 {$ifDEF _DEBUG_}
-                DEBUG('OK','TForm('+addr2txt(sender)+').onClose executed');
+                DEBUG('ER','Sender is NOT TForm');
                 {$endIf}
             end;
         end
         else begin
             {$ifDEF _DEBUG_}
-            DEBUG('ER','Sender is NOT TForm');
+            DEBUG('ER','Sender==NIL');
             {$endIf}
         end;
     end
     else begin
         {$ifDEF _DEBUG_}
-        DEBUG('ER','Sender==NIL');
+        DEBUG('ER','Sender<>_ide_Window_CEV_');
         {$endIf}
     end;
 
@@ -471,6 +508,89 @@ begin
         DEBUG('_CEV_reStore_onClose','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tLazExt_BTF_CodeExplorer._CEV_SET_(const wnd:tForm);
+begin
+    if wnd<>_ide_Window_CEV_ then begin
+        if Assigned(_ide_Window_CEV_)
+        then begin
+           _CEV_reStore_onClose(_ide_Window_CEV_);
+            {$ifDEF _DEBUG_}
+            DEBUG('ERROR','_CEV_SET_ inline var _ide_Window_CEV_==NIL');
+            ShowMessage('_SEW_SET inline var _ide_Window_SEW_<>NIL'+_cPleaseReport_);
+            {$endIf}
+        end;
+       _CEV_rePlace_onClose(wnd);
+       _ide_Window_CEV_:=wnd;
+    end;
+end;
+
+{$endIf}
+
+{%endRegion}
+
+{%region --- ide_Window_CEV : API_005 ----------------------------- /fold}
+
+{$ifDef _lazExt_aBTF_CodeExplorer_API_005_}
+
+const //< тут возможно придется определять относительно ВЕРСИИ ЛАЗАРУСА
+  cWndCEV_className='TCodeExplorerView';
+
+// исчем ЭКЗЕМПЛЯР окна
+//  поиск по ИМЕНИ класса в хранилище открытых окон `Screen.Form`
+function tLazExt_BTF_CodeExplorer._CEV_find_:TForm;
+var i:integer;
+    f:TForm;
+begin
+    result:=nil;
+    for i:=0 to Screen.FormCount-1 do begin
+        f:=Screen.Forms[i];
+        {$ifDEF _DEBUG_}
+        DEBUG('CEV','Find '+f.ClassName);
+        {$endIf}
+        if f.ClassNameIs(cWndCEV_className) then begin
+            result:=f;
+            {$ifDEF _DEBUG_}
+            DEBUG('CEV','FOUND '+cWndCEV_className+addr2txt(f));
+            {$endIf}
+            break;
+        end;
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
+function tLazExt_BTF_CodeExplorer._CEV_GET:TForm;
+begin
+    {$ifDef _lazExt_aBTF_CodeExplorer_API_004_}
+    if not Assigned(_ide_Window_CEV_) then begin
+        result:=_CEV_find_;
+       _CEV_SET_(result);
+    end
+    else begin
+        result:=_ide_Window_CEV_;
+    end;
+    {$else}
+    result:=_CEV_find_;
+    {$endIf}
+    {$ifDef lazExt_aBTF_CodeExplorer_Auto_SHOW}
+    {todo:ДЕЛАТЬ}
+
+(*    // вызываем окно `CodeExplorerView`, оно встанет на ПЕРЕДНИЙ план
+    // потом на передний план перемещаем окно `ActiveSourceWindow`
+    //---
+    // все это приводит к излишним дерганиям и как-то через Ж.
+   _SEW_reStore_onDeactivate(tmpSourceWindow);
+    result:=_do_BTF_CodeExplorer_do_wndCE_OPN
+            and
+            _do_BTF_CodeExplorer_do_wndSE_BTF;
+   _SEW_rePlace_onDeactivate(tmpSourceWindow);
+*)
+
+    {$endIf}
 end;
 
 {$endIf}

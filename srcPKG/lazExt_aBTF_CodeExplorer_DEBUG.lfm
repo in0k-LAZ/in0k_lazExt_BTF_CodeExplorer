@@ -1,9 +1,9 @@
-object lazExt_BTF_CodeExplorer_wndDBG: TlazExt_BTF_CodeExplorer_wndDBG
+object lazExt_aBTF_CodeExplorer_wndDBG: TlazExt_aBTF_CodeExplorer_wndDBG
   Left = 379
   Height = 240
   Top = 129
   Width = 320
-  Caption = 'lazExt_BTF_CodeExplorer_wndDBG'
+  Caption = 'lazExt_aBTF_CodeExplorer_wndDBG'
   ClientHeight = 240
   ClientWidth = 320
   OnClose = FormClose
