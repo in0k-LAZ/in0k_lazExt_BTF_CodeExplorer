@@ -6,14 +6,12 @@ interface
 
 {$I in0k_lazExt_aBTF_CodeExplorer_INI.inc}
 
-//-----
-
+{%region --- setUp INLINE SETTINGs for Compile     ---------------- /fold}
 {$undef _lazExt_aBTF_CodeExplorer_API_001_}
 {$undef _lazExt_aBTF_CodeExplorer_API_002_}
 {$undef _lazExt_aBTF_CodeExplorer_API_003_}
 {$undef _lazExt_aBTF_CodeExplorer_API_004_}
 {$undef _lazExt_aBTF_CodeExplorer_API_005_}
-
 //----
 {$ifDef lazExt_aBTF_CodeExplorer_Auto_SHOW}
     {$define _lazExt_aBTF_CodeExplorer_API_001_}
@@ -31,12 +29,19 @@ interface
     {$define _lazExt_aBTF_CodeExplorer_API_002_}
     {$define _lazExt_aBTF_CodeExplorer_API_001_}
 {$endif}
-
-{$hint 'SETTINGs info: ---------------------------->>>'}
-{$ifDef lazExt_aBTF_CodeExplorer_DEBUG_mode}
-    {$hint 'lazExt_aBTF_CodeExplorer_DEBUG_mode On'}
+{$ifDef lazExt_aBTF_CodeExplorer_EventLOG_mode}
+    {$define _EventLOG_}
 {$else}
-    {$hint 'lazExt_aBTF_CodeExplorer_DEBUG_mode OFF'}
+    {$undef  _EventLOG_}
+{$endIf}
+{$define _INLINE_}
+{%endRegion}
+{%region --- Hint about Global SETTINGs on Compile ---------------- /fold}
+{$hint 'SETTINGs info: ---------------------------->>>'}
+{$ifDef lazExt_aBTF_CodeExplorer_EventLOG_mode}
+    {$hint 'lazExt_aBTF_CodeExplorer_EventLOG_mode On'}
+{$else}
+    {$hint 'lazExt_aBTF_CodeExplorer_EventLOG_mode OFF'}
 {$endif}
 {$ifDef lazExt_aBTF_CodeExplorer_Auto_SHOW}
     {$hint 'lazExt_aBTF_CodeExplorer_Auto_SHOW On'}
@@ -54,25 +59,13 @@ interface
     {$hint 'lazExt_aBTF_CodeExplorer_cacheCodeExplorer OFF'}
 {$endif}
 {$hint '<<<---------------------------------------->>>'}
+{%endRegion}
 
-
-{$ifDef lazExt_aBTF_CodeExplorer_DEBUG_mode}
-    {$define _DEBUG_}
-{$else}
-    {$undef  _DEBUG_}
-{$endIf}
-{$ifDef _DEBUG_}
-    {$undef  _INLINE_}
-{$else}
-    {$define _INLINE_}
-{$endIf}
-
-
-uses {$ifDEF lazExt_aBTF_CodeExplorer_DEBUG_mode}
+uses {$ifDEF lazExt_aBTF_CodeExplorer_EventLOG_mode}
         sysutils, Dialogs, lazExt_aBTF_CodeExplorer_DEBUG,
      {$endIf}
      {$ifDEF lazExt_aBTF_CodeExplorer_WinAPI_mode}
-        windows,
+        windows, Controls,
      {$endIf}
      SrcEditorIntf, IDECommands,
      Classes, Forms;
@@ -127,6 +120,7 @@ type
   {%region --- ide_Window_CEV : API_005 --------------------------- /fold}
   {$ifDef _lazExt_aBTF_CodeExplorer_API_005_}
   strict private
+    function  _CEV_find_inSCREEN:TForm;
     function  _CEV_find_:TForm;
   private
     function  _CEV_GET:TForm;
@@ -150,18 +144,14 @@ type
 
 implementation
 
-
-{$ifDEF _DEBUG_}
-
+{$ifDEF _EventLOG_}
 const
    _cPleaseReport_=
         LineEnding+
         'EN: Please report this error to the developer.'+LineEnding+
-        'RU: пожалуйста, сообщите об этой ошибке разработчику.'+
+        'RU: Пожалуйста, сообщите об этой ошибке разработчику.'+
         LineEnding;
 {$endIf}
-
-
 
 constructor tLazExt_BTF_CodeExplorer.Create;
 begin
@@ -206,7 +196,7 @@ const //< тут возможно придется определять отно
 procedure tLazExt_BTF_CodeExplorer._IDECommand_OpnCEV_FIND_;
 begin
    _IDECommand_OpnCEV_:=IDECommandList.FindIDECommand(_c_IDECommand_OpnCE_IdeCODE);
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     if Assigned(_IDECommand_OpnCEV_)
     then DEBUG('OK','IDECommand_OpnCEV "ToggleCodeExpl" FOUND')
     else DEBUG('ER','IDECommand_OpnCEV "ToggleCodeExpl" NOT found')
@@ -228,7 +218,7 @@ function tLazExt_BTF_CodeExplorer._IDECommand_OpnCEV_execute_:boolean;
 begin
     if _IDECommand_OpnCEV_present_ then begin
         result:=_IDECommand_OpnCEV_.Execute(nil);
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         if result then DEBUG('OK','IDECommand_OpnCEV.execute')
                   else DEBUG('ER','IDECommand_OpnCEV.execute');
         {$endIf}
@@ -249,7 +239,7 @@ end;
 // НАШЕ событие, при `onDeactivate` ActiveSrcWND
 procedure tLazExt_BTF_CodeExplorer._SEW_onDeactivate_myCustom(Sender:TObject);
 begin
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('_SEW_onDeactivate_myCustom','--->>> Sender'+addr2txt(Sender));
     {$endIf}
 
@@ -262,24 +252,24 @@ begin
            _SEW_reStore_onDeactivate(tForm(Sender));
             with TSourceEditorWindowInterface(Sender) do begin
                 if Assigned(OnDeactivate) then OnDeactivate(Sender);
-                {$ifDEF _DEBUG_}
+                {$ifDEF _EventLOG_}
                 DEBUG('OK','TSourceEditorWindowInterface('+addr2txt(sender)+').OnDeactivate executed');
                 {$endIf}
             end;
         end
         else begin
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('ER','Sender is NOT TSourceEditorWindowInterface');
             {$endIf}
         end;
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('ER','Sender==NIL');
         {$endIf}
     end;
 
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('_SEW_onDeactivate_myCustom','---<<<');
     {$endIf}
 end;
@@ -292,12 +282,12 @@ begin
     if Assigned(wnd) and (wnd.OnDeactivate<>@_SEW_onDeactivate_myCustom) then begin
        _ide_Window_SEW_onDeactivate_original:=wnd.OnDeactivate;
         wnd.OnDeactivate:=@_SEW_onDeactivate_myCustom;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_SEW_rePlace_onDeactivate','rePALCE wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_SEW_rePlace_onDeactivate','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end
@@ -309,12 +299,12 @@ begin
     if Assigned(wnd) and (wnd.OnDeactivate=@_SEW_onDeactivate_myCustom) then begin
         wnd.OnDeactivate:=_ide_Window_SEW_onDeactivate_original;
        _ide_Window_SEW_onDeactivate_original:=NIL;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_SEW_reStore_onDeactivate','wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_SEW_reStore_onDeactivate','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end;
@@ -328,7 +318,7 @@ begin
         if Assigned(_ide_Window_SEW_)
         then begin
            _SEW_reStore_onDeactivate(_ide_Window_SEW_);
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('ERROR','_SEW_SET inline var _ide_Window_SEW_<>NIL');
             ShowMessage('_SEW_SET inline var _ide_Window_SEW_<>NIL'+_cPleaseReport_);
             {$endIf}
@@ -358,13 +348,13 @@ begin
     if Assigned(tmp) then begin
         tmp.BringToFront;
         result:=true;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('ok','ActiveSourceWindow.BringToFront');
         {$endIf}
     end
     else begin
         result:=false;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('er','ActiveSourceWindow.BringToFront');
         {$endIf}
     end;
@@ -403,7 +393,7 @@ begin
     end
     else begin
         result:=false;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         if not Assigned(_ide_Window_SEW_) then DEBUG('EVENT','_ide_Window_SEW_==nil');
         if not Assigned(cev)              then DEBUG('EVENT','_ide_Window_CEV_==nil');
         {$endIf}
@@ -421,7 +411,7 @@ begin
     {$else} //< "стандартными" средствами IDE lazarus
         result:=_do_BTF_CodeExplorer_use_ideLaz;
     {$endIf}
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     if result then DEBUG('BTF_CodeExplorer','OK')
               else DEBUG('BTF_CodeExplorer','ER');
     {$endIf}
@@ -435,7 +425,7 @@ end;
 
 procedure tLazExt_BTF_CodeExplorer._CEV_onClose_myCustom_(Sender:TObject; var CloseAction:TCloseAction);
 begin
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('_CEV_onClose_myCustom_','--->>> Sender'+addr2txt(Sender));
     {$endIf}
 
@@ -448,30 +438,30 @@ begin
                _CEV_reStore_onClose(tForm(Sender));
                 with tForm(Sender) do begin
                     if Assigned(OnClose) then OnClose(Sender,CloseAction);
-                    {$ifDEF _DEBUG_}
+                    {$ifDEF _EventLOG_}
                     DEBUG('OK','TForm('+addr2txt(sender)+').onClose executed');
                     {$endIf}
                 end;
             end
             else begin
-                {$ifDEF _DEBUG_}
+                {$ifDEF _EventLOG_}
                 DEBUG('ER','Sender is NOT TForm');
                 {$endIf}
             end;
         end
         else begin
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('ER','Sender==NIL');
             {$endIf}
         end;
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('ER','Sender<>_ide_Window_CEV_');
         {$endIf}
     end;
 
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('_CEV_onClose_myCustom_','---<<<');
     {$endIf}
 end;
@@ -483,12 +473,12 @@ begin
     if Assigned(wnd) and (wnd.OnClose<>@_CEV_onClose_myCustom_) then begin
        _ide_Window_CEV_onClose_original_:=wnd.OnClose;
         wnd.OnClose:=@_CEV_onClose_myCustom_;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_CEV_rePlace_onClose','rePALCE wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_CEV_rePlace_onClose','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end
@@ -499,12 +489,12 @@ begin
     if Assigned(wnd) and (wnd.OnClose=@_CEV_onClose_myCustom_) then begin
         wnd.OnClose:=_ide_Window_CEV_onClose_original_;
        _ide_Window_CEV_onClose_original_:=NIL;
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_CEV_reStore_onClose','wnd'+addr2txt(wnd));
         {$endIf}
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('_CEV_reStore_onClose','SKIP wnd'+addr2txt(wnd));
         {$endIf}
     end;
@@ -518,7 +508,7 @@ begin
         if Assigned(_ide_Window_CEV_)
         then begin
            _CEV_reStore_onClose(_ide_Window_CEV_);
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('ERROR','_CEV_SET_ inline var _ide_Window_CEV_==NIL');
             ShowMessage('_SEW_SET inline var _ide_Window_SEW_<>NIL'+_cPleaseReport_);
             {$endIf}
@@ -539,21 +529,19 @@ end;
 const //< тут возможно придется определять относительно ВЕРСИИ ЛАЗАРУСА
   cWndCEV_className='TCodeExplorerView';
 
-// исчем ЭКЗЕМПЛЯР окна
-//  поиск по ИМЕНИ класса в хранилище открытых окон `Screen.Form`
-function tLazExt_BTF_CodeExplorer._CEV_find_:TForm;
+function tLazExt_BTF_CodeExplorer._CEV_find_inSCREEN:TForm;
 var i:integer;
     f:TForm;
 begin
     result:=nil;
     for i:=0 to Screen.FormCount-1 do begin
         f:=Screen.Forms[i];
-        {$ifDEF _DEBUG_}
-        DEBUG('CEV','Find '+f.ClassName);
+        {$ifDEF _EventLOG_}
+        DEBUG('CEV','Find in SCREEN '+f.ClassName);
         {$endIf}
         if f.ClassNameIs(cWndCEV_className) then begin
             result:=f;
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('CEV','FOUND '+cWndCEV_className+addr2txt(f));
             {$endIf}
             break;
@@ -561,35 +549,48 @@ begin
     end;
 end;
 
-//------------------------------------------------------------------------------
 
-function tLazExt_BTF_CodeExplorer._CEV_GET:TForm;
+// исчем ЭКЗЕМПЛЯР окна
+//  поиск по ИМЕНИ класса в хранилище открытых окон `Screen.Form`
+function tLazExt_BTF_CodeExplorer._CEV_find_:TForm;
 begin
     {$ifDef _lazExt_aBTF_CodeExplorer_API_004_}
     if not Assigned(_ide_Window_CEV_) then begin
-        result:=_CEV_find_;
+        result:=_CEV_find_inSCREEN;
        _CEV_SET_(result);
     end
     else begin
         result:=_ide_Window_CEV_;
     end;
     {$else}
-    result:=_CEV_find_;
+    result:=_CEV_find_inSCREEN;
     {$endIf}
+end;
+
+//------------------------------------------------------------------------------
+
+function tLazExt_BTF_CodeExplorer._CEV_GET:TForm;
+begin
+    result:=_CEV_find_;
     {$ifDef lazExt_aBTF_CodeExplorer_Auto_SHOW}
-    {todo:ДЕЛАТЬ}
-
-(*    // вызываем окно `CodeExplorerView`, оно встанет на ПЕРЕДНИЙ план
-    // потом на передний план перемещаем окно `ActiveSourceWindow`
-    //---
-    // все это приводит к излишним дерганиям и как-то через Ж.
-   _SEW_reStore_onDeactivate(tmpSourceWindow);
-    result:=_do_BTF_CodeExplorer_do_wndCE_OPN
-            and
-            _do_BTF_CodeExplorer_do_wndSE_BTF;
-   _SEW_rePlace_onDeactivate(tmpSourceWindow);
-*)
-
+    if (not Assigned(result))or(not result.Visible) then begin
+        {$ifDEF _EventLOG_}
+        DEBUG('CEV','NOT FOUND, mast by CREATE');
+        {$endIf}
+        // вызываем окно `CodeExplorerView`, оно встанет на ПЕРЕДНИЙ план
+        // все это приводит к излишним дерганиям и как-то через Ж.
+       _SEW_reStore_onDeactivate(_ide_Window_SEW_);
+       _IDECommand_OpnCEV_execute_;
+       _SEW_rePlace_onDeactivate(_ide_Window_SEW_);
+        // теперь сного его поисчем
+        result:=_CEV_find_;
+        {$ifDEF _EventLOG_}
+        if not Assigned(result) then begin
+            DEBUG('CEV','NOT FOUND !!! BIG ERROR: possible name "'+cWndCEV_className+'" is WRONG');
+            ShowMessage('_CEV_GET:NOT FOUND !!! BIG ERROR: possible name "'+cWndCEV_className+'" is WRONG'+_cPleaseReport_);
+        end;
+        {$endIf}
+    end;
     {$endIf}
 end;
 
@@ -620,20 +621,20 @@ begin
                 else _ideEvent_Editor_:=NIL;
             end
             else begin
-                {$ifDEF _DEBUG_}
+                {$ifDEF _EventLOG_}
                 DEBUG('SKIP','already processed');
                 {$endIf}
             end;
         end
         else begin
            _ideEvent_Editor_:=nil;
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('ER','ActiveEditor is NULL');
             {$endIf}
         end;
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('ER','IDE not ready');
         {$endIf}
     end;
@@ -643,26 +644,26 @@ end;
 
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semEditorActivate(Sender:TObject);
 begin
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('ideEVENT:semEditorActivate','--->>>'+' sender'+addr2txt(Sender));
     {$endIf}
 
     if assigned(_ide_Window_SEW_) //< запускаемся только если окно
     then _ideEvent_exeEvent_      //  редактирования в ФОКУСЕ
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('SKIP','ActiveSourceWindow is UNfocused');
         {$endIf}
     end;
 
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('ideEVENT:semEditorActivate','---<<<');
     {$endIf}
 end;
 
 procedure tLazExt_BTF_CodeExplorer._ideEvent_semWindowFocused(Sender:TObject);
 begin
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('ideEVENT:semWindowFocused','--->>>'+' sender'+addr2txt(Sender));
     {$endIf}
 
@@ -672,18 +673,18 @@ begin
            _ideEvent_exeEvent_;
         end
         else begin
-            {$ifDEF _DEBUG_}
+            {$ifDEF _EventLOG_}
             DEBUG('SKIP WITH ERROR','BIG ERROR: ower _ide_Window_SEW_ found');
             {$endIf}
         end;
     end
     else begin
-        {$ifDEF _DEBUG_}
+        {$ifDEF _EventLOG_}
         DEBUG('SKIP','Sender undef');
         {$endIf}
     end;
 
-    {$ifDEF _DEBUG_}
+    {$ifDEF _EventLOG_}
     DEBUG('ideEVENT:semWindowFocused','---<<<');
     {$endIf}
 end;

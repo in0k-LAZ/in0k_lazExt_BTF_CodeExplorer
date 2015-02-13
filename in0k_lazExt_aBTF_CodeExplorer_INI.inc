@@ -8,24 +8,24 @@
 // определяем режим ДЕБАГ
 //  Позволяет просматривать лог событий в отдельном окне из IDE
 //  View -> IDE Internals -> [eventLog] lazExt_BTF_CodeExplorer
-{$define lazExt_BTF_CodeExplorer_DEBUG_mode}
+{.$define lazExt_aBTF_CodeExplorer_EventLOG_mode}
 
 // Режим работы через winApi.
 //  Позволяет "вытягивать" окно CodeExplorer на ПЕРД топ позицию, что позволяет
 //  исключить мерцание окон SourceEditor.
 //  Использует мотоды Windows API, поэтому в системах отличных от Windows
 //  автоматически отключается (так как не тестировалась).
-{$define lazExt_BTF_CodeExplorer_WinAPI_mode}
+{$define lazExt_aBTF_CodeExplorer_WinAPI_mode}
 
 // Авто открытие окна CodeExplorer.
-//  Pаботает ТОЛЬКО в режиме lazExt_BTF_CodeExplorer_WinAPI_mode.
+//  Pаботает ТОЛЬКО в режиме lazExt_aBTF_CodeExplorer_WinAPI_mode.
 //  В обычном режиме это НЕ отключаемая опция.
-{.$define lazExt_BTF_CodeExplorer_Auto_SHOW}
+{.$define lazExt_aBTF_CodeExplorer_Auto_SHOW}
 
 // Кешровать окно CodeExplorer.
 //  Но это сомнительная оптимизация.
-//  Pаботает ТОЛЬКО в режиме lazExt_BTF_CodeExplorer_WinAPI_mode.
-{.$define lazExt_BTF_CodeExplorer_cacheCodeExplorer}
+//  Pаботает ТОЛЬКО в режиме lazExt_aBTF_CodeExplorer_WinAPI_mode.
+{.$define lazExt_aBTF_CodeExplorer_cacheCodeExplorer}
 
 
 //------------------------------------------------------------------------------
@@ -36,8 +36,8 @@
 
 {$IFDEF Windows}
 {$else}
-    {$undef  lazExt_BTF_CodeExplorer_WinAPI_mode}
-    {$undef  lazExt_BTF_CodeExplorer_cacheCodeExplorer}
-    {$define lazExt_BTF_CodeExplorer_Auto_SHOW}
+    {$undef  lazExt_aBTF_CodeExplorer_WinAPI_mode}
+    {$undef  lazExt_aBTF_CodeExplorer_cacheCodeExplorer}
+    {$define lazExt_aBTF_CodeExplorer_Auto_SHOW}
 {$endIf}
 
