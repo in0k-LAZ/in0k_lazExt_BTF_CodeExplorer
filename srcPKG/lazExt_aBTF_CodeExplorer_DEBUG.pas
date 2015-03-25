@@ -50,6 +50,7 @@ begin
     DEBUG_window_SHOW;
 end;
 
+// Зарегистрировать в IDE Lazarus пункт меню для вызова окна "ЛОГА"
 procedure RegisterInIdeLAZARUS;
 begin
     RegisterIDEMenuCommand(itmViewIDEInternalsWindows, _c_WndDBG_Caption_,_c_WndDBG_Caption_,nil,@_onClickIdeMenuItem_);
