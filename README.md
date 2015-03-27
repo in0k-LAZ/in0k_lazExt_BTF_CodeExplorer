@@ -9,7 +9,7 @@
 
 | a | b | c |
 |---|---|---|
-|![рис. 1](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_ObjectInspector/blob/master/IDE_FormEditor_ObjectInspector.png)| **F12** |![рис. 2](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_ObjectInspector/blob/master/IDE_SourceEditor_CodeExplorer.png)|
+|![рис. 1](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_CodeExplorer/blob/master/IDE_FormEditor_ObjectInspector.png)| **F12** |![рис. 2](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_CodeExplorer/blob/master/IDE_SourceEditor_CodeExplorer.png)|
 
 где:
 
