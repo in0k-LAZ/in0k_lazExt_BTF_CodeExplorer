@@ -1,27 +1,25 @@
-Описание
-========
+### Overview
 
-**Пакет расширение Lazarus IDE**: перемещение на передний план окна ["Code Explorer"](http://wiki.freepascal.org/IDE_Window:_Code_Explorer) при переходе в окно ["Source Editor"](http://wiki.freepascal.org/IDE_Window:_Source_Editor).
+*[Expert]* for *[Lazarus IDE]*.
 
-##Использование
+###### Adds features to the IDE
+When *"[Source Editor]"* window receive focus, window *"[Code Explorer]"*
+bring to second plan (moves the window *"Code Explorer"* of the sequence
+Z-Order directly under active window *"Source Editor"*).
 
-Допустим, работая дизайненре окна "**Form Editor**" и имея расположение окон *(a)*, нажав клавишу **F12**, для перехода в режим редактирования исходного кода формы, получим следующую картинку *(с)*
+### Installation and Setup
+Installation by standard scheme. If necessary, before you install the package,
+edit the configuration file `in0k_lazExt_aBTF_CodeExplorer_INI.inc`.
 
-| a | b | c |
-|---|---|---|
-|![рис. 1](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_CodeExplorer/blob/master/IDE_FormEditor_ObjectInspector.png)| **F12** |![рис. 2](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_CodeExplorer/blob/master/IDE_SourceEditor_CodeExplorer.png)|
+### Remarks
+* I have **not tested** this tool in the "Linux", but should work with the 
+  blinking of the screen.
+* Read *[wiki]* for more details.
+* Together with this package I recommend to use
+  [in0k\_lazExt\_aBTF\_CodeExplorer](https://github.com/in0k-LAZ/in0k_lazExt_aBTF_CodeExplorer).
 
-где:
-
-1. окно "**Source Editor**" получившее фокус
-2. окно "**Code Explorer**" автоматически перемещенное на "передний" план.
-
-## Настройка и установка
-
-1. Скопировать исходники в любую удобную директорию `<$someDir>`.
-2. Открыть файл `<$someDir>/in0k_lazExt_aBTF_CodeExplorer.lpk` в **Lazarus IDE**.
-3. Настроить редактируя файл `<$someDir>/in0k_lazExt_aBTF_CodeExplorer_INI.inc`.
-4. Скомпилировать и установить пакет.
-
-*замечания*: подробно про установку пакетов должно быть написано [тут](http://wiki.freepascal.org/Install_Packages). 
-
+[Lazarus IDE]:   http://www.lazarus-ide.org/
+[Expert]:       http://wiki.lazarus.freepascal.org/Extending_the_IDE#Overview
+[Source Editor]: http://wiki.freepascal.org/IDE_Window:_Source_Editor
+[Code Explorer]: http://wiki.freepascal.org/IDE_Window:_Code_Explorer
+[wiki]:          https://github.com/in0k-LAZ/in0k_lazExt_aBTF_CodeExplorer/wiki
