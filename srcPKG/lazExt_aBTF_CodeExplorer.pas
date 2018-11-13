@@ -3,7 +3,7 @@ unit lazExt_aBTF_CodeExplorer;
 {$mode objfpc}{$H+}
 
 interface
-
+(*
 {$I in0k_lazExt_aBTF_CodeExplorer_INI.inc}
 
 {%region --- setUp INLINE SETTINGs for Compile     ---------------- /fold}
@@ -60,8 +60,8 @@ interface
 {$endif}
 {$hint '<<<---------------------------------------->>>'}
 {%endRegion}
-
-uses {$ifDEF lazExt_aBTF_CodeExplorer_EventLOG_mode}
+*)
+(*uses {$ifDEF lazExt_aBTF_CodeExplorer_EventLOG_mode}
         sysutils, Dialogs, lazExt_aBTF_CodeExplorer_DEBUG,
      {$endIf}
      {$ifDEF lazExt_aBTF_CodeExplorer_WinAPI_mode}
@@ -141,9 +141,9 @@ type
   public
     procedure RegisterInIdeLAZARUS;
   end;
-
+*)
 implementation
-
+(*
 {$ifDEF _EventLOG_}
 const
    _cPleaseReport_=
@@ -698,5 +698,5 @@ begin
 end;
 
 {%endRegion}
-
+*)
 end.

@@ -3,30 +3,25 @@
   <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="in0k_lazExt_aBTF_CodeExplorer"/>
+    <Type Value="DesignTime"/>
     <CompilerOptions>
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="srcPKG"/>
+        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__fuckUpControl;srcPKG;srcEXT\in0k_lazarusIdeSRC__ideForms;srcEXT\in0k_lazarusIdeSRC__B2SP;srcEXT\in0k-bringToSecondPlane"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
-      <Other>
-        <CompilerMessages>
-          <MsgFileName Value=""/>
-        </CompilerMessages>
-        <CompilerPath Value="$(CompPath)"/>
-      </Other>
     </CompilerOptions>
     <Version Minor="5"/>
-    <Files Count="4">
+    <Files Count="11">
       <Item1>
-        <Filename Value="in0k_lazExt_aBTF_CodeExplorer_INI.inc"/>
+        <Filename Value="in0k_LazarusIdeSRC__SETTINGs.inc"/>
         <Type Value="Text"/>
       </Item1>
       <Item2>
-        <Filename Value="in0k_lazExt_aBTF_CodeExplorer_REG.pas"/>
+        <Filename Value="in0k_LazarusIdeEXT__REGISTER.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="in0k_lazExt_aBTF_CodeExplorer_REG"/>
+        <UnitName Value="in0k_LazarusIdeEXT__REGISTER"/>
       </Item2>
       <Item3>
         <Filename Value="srcPKG\lazExt_aBTF_CodeExplorer.pas"/>
@@ -36,8 +31,35 @@
         <Filename Value="srcPKG\lazExt_aBTF_CodeExplorer_DEBUG.pas"/>
         <UnitName Value="lazExt_aBTF_CodeExplorer_DEBUG"/>
       </Item4>
+      <Item5>
+        <Filename Value="srcPKG\in0k_lazarusIdePLG__wndSatellite_CodeExplorer4SourceEditor.pas"/>
+        <UnitName Value="in0k_lazarusIdePLG__wndSatellite_CodeExplorer4SourceEditor"/>
+      </Item5>
+      <Item6>
+        <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__wndSatellite_templates__4FormDesigner.pas"/>
+        <UnitName Value="in0k_lazarusIdeSRC__wndSatellite_templates__4FormDesigner"/>
+      </Item6>
+      <Item7>
+        <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow.pas"/>
+        <UnitName Value="in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow"/>
+      </Item7>
+      <Item8>
+        <Filename Value="srcEXT\in0k_lazarusIdeSRC__ideForms\in0k_lazarusIdeSRC__ideForm_CodeExplorerView.pas"/>
+        <UnitName Value="in0k_lazarusIdeSRC__ideForm_CodeExplorerView"/>
+      </Item8>
+      <Item9>
+        <Filename Value="srcEXT\in0k_lazarusIdeSRC__B2SP\in0k_lazarusIdeSRC__B2SP.pas"/>
+        <UnitName Value="in0k_lazarusIdeSRC__B2SP"/>
+      </Item9>
+      <Item10>
+        <Filename Value="srcEXT\in0k-bringToSecondPlane\in0k_bringToSecondPlane_LazLCL.pas"/>
+        <UnitName Value="in0k_bringToSecondPlane_LazLCL"/>
+      </Item10>
+      <Item11>
+        <Filename Value="srcEXT\in0k-bringToSecondPlane\in0k_bringToSecondPlane_WinAPI.pas"/>
+        <UnitName Value="in0k_bringToSecondPlane_WinAPI"/>
+      </Item11>
     </Files>
-    <Type Value="DesignTime"/>
     <RequiredPkgs Count="2">
       <Item1>
         <PackageName Value="IDEIntf"/>
