@@ -7,9 +7,6 @@
 [submodule "srcEXT/in0k_lazarusIdeSRC__wndSatellite_templates"]
 	path = srcEXT/in0k_lazarusIdeSRC__wndSatellite_templates
 	url = https://github.com/in0k-LazarusIDE-soures/in0k_lazarusIdeSRC__wndSatellite_templates.git
-[submodule "srcEXT/in0k_lazarusIdeSRC__fuckUpControl"]
-	path = srcEXT/in0k_lazarusIdeSRC__fuckUpControl
-	url = https://github.com/in0k-LazarusIDE-soures/in0k_lazarusIdeSRC__fuckUpControl.git
 [submodule "srcEXT/in0k_lazarusIdeSRC__ideForms"]
 	path = srcEXT/in0k_lazarusIdeSRC__ideForms
 	url = https://github.com/in0k-LazarusIDE-soures/in0k_lazarusIdeSRC__ideForms.git
