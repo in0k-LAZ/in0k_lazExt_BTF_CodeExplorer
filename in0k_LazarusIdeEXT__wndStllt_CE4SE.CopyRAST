@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <approvedFILEs2NAMEs>     
+    <ROOT>                  
+      <nameStated Value="in0k_ideExpert__wndStllt_CE4SE"/>
+      <pathStated Value="D:\!PROGECTs\!in0k\in0k-LazarusIDE-plugins---USE\in0k_ideExpert__wndStllt_CE4SE"/>
+    </ROOT>
+    <Customers>
+      <FILEs count="2">
+        <item0 Path="in0k_LazarusIdeSRC__Settings.inc">
+          <nameStated Value="in0k_SETTINGs__wndStllt_CE4SE.inc"/>
+        </item0>
+        <item1 Path="in0k_LazarusIdeEXT__REGISTER.pas">
+          <nameStated Value="in0k_REGISTER__wndStllt_CE4SE.pas"/>
+        </item1>
+      </FILEs>
+    </Customers>
+    <Templates count="2">
+      <item0 count="2" Path="srcEXT">
+        <item0>
+          <template Value="in0k_LazarusIdeSRC"/>
+          <exchange Value="srcWndStllt_CE4SE"/>
+        </item0>
+        <item1>
+          <template Value="in0k_"/>
+          <exchange Value="srcWndStllt_CE4SE"/>
+        </item1>
+      </item0>
+    <item1 count="1" Path="srcPKG">
+        <item0>
+          <template Value="in0k_LazarusIdePLG"/>
+          <exchange Value="in0k_idePlugIn"/>
+        </item0>
+      </item1>
+    </Templates>
+  </approvedFILEs2NAMEs>
+</CONFIG>

@@ -2,18 +2,31 @@
 <CONFIG>
   <Package Version="4">
     <PathDelim Value="\"/>
-    <Name Value="in0k_lazExt_aBTF_CodeExplorer"/>
+    <Name Value="in0k_LazarusIdeEXT__wndStllt_CE4SE"/>
     <Type Value="DesignTime"/>
+    <Author Value="in0k"/>
     <CompilerOptions>
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__fuckUpControl;srcPKG;srcEXT\in0k_lazarusIdeSRC__ideForms;srcEXT\in0k_lazarusIdeSRC__B2SP;srcEXT\in0k-bringToSecondPlane"/>
+        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__ideForms;srcEXT\in0k_lazarusIdeSRC__B2SP;srcEXT\in0k-bringToSecondPlane;srcPKG"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
+      <CodeGeneration>
+        <SmartLinkUnit Value="True"/>
+        <Optimizations>
+          <OptimizationLevel Value="3"/>
+        </Optimizations>
+      </CodeGeneration>
+      <Linking>
+        <Debugging>
+          <GenerateDebugInfo Value="False"/>
+        </Debugging>
+      </Linking>
     </CompilerOptions>
-    <Version Minor="5"/>
-    <Files Count="11">
+    <Description Value="When &quot;Source Editor&quot; window receive focus, window &quot;Code Explorer&quot; bring to second plan (moves the window &quot;Code Explorer&quot; of the sequence Z-Order directly under active window &quot;Source Editor&quot;)."/>
+    <Version Minor="6"/>
+    <Files Count="8">
       <Item1>
         <Filename Value="in0k_LazarusIdeSRC__SETTINGs.inc"/>
         <Type Value="Text"/>
@@ -24,41 +37,29 @@
         <UnitName Value="in0k_LazarusIdeEXT__REGISTER"/>
       </Item2>
       <Item3>
-        <Filename Value="srcPKG\lazExt_aBTF_CodeExplorer.pas"/>
-        <UnitName Value="lazExt_aBTF_CodeExplorer"/>
+        <Filename Value="srcPKG\in0k_lazarusIdePLG__wndStllt_CE4SE.pas"/>
+        <UnitName Value="in0k_lazarusIdePLG__wndStllt_CE4SE"/>
       </Item3>
       <Item4>
-        <Filename Value="srcPKG\lazExt_aBTF_CodeExplorer_DEBUG.pas"/>
-        <UnitName Value="lazExt_aBTF_CodeExplorer_DEBUG"/>
-      </Item4>
-      <Item5>
-        <Filename Value="srcPKG\in0k_lazarusIdePLG__wndSatellite_CodeExplorer4SourceEditor.pas"/>
-        <UnitName Value="in0k_lazarusIdePLG__wndSatellite_CodeExplorer4SourceEditor"/>
-      </Item5>
-      <Item6>
-        <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__wndSatellite_templates__4FormDesigner.pas"/>
-        <UnitName Value="in0k_lazarusIdeSRC__wndSatellite_templates__4FormDesigner"/>
-      </Item6>
-      <Item7>
         <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow.pas"/>
         <UnitName Value="in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow"/>
-      </Item7>
-      <Item8>
+      </Item4>
+      <Item5>
         <Filename Value="srcEXT\in0k_lazarusIdeSRC__ideForms\in0k_lazarusIdeSRC__ideForm_CodeExplorerView.pas"/>
         <UnitName Value="in0k_lazarusIdeSRC__ideForm_CodeExplorerView"/>
-      </Item8>
-      <Item9>
+      </Item5>
+      <Item6>
         <Filename Value="srcEXT\in0k_lazarusIdeSRC__B2SP\in0k_lazarusIdeSRC__B2SP.pas"/>
         <UnitName Value="in0k_lazarusIdeSRC__B2SP"/>
-      </Item9>
-      <Item10>
+      </Item6>
+      <Item7>
         <Filename Value="srcEXT\in0k-bringToSecondPlane\in0k_bringToSecondPlane_LazLCL.pas"/>
         <UnitName Value="in0k_bringToSecondPlane_LazLCL"/>
-      </Item10>
-      <Item11>
+      </Item7>
+      <Item8>
         <Filename Value="srcEXT\in0k-bringToSecondPlane\in0k_bringToSecondPlane_WinAPI.pas"/>
         <UnitName Value="in0k_bringToSecondPlane_WinAPI"/>
-      </Item11>
+      </Item8>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>
