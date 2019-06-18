@@ -9,7 +9,7 @@ interface
 uses {$ifDef in0k_LazarusIdeEXT__DEBUG}in0k_lazarusIdeSRC__wndDEBUG,{$endIf}
    in0k_lazarusIdeSRC__TMPLT_4SourceWindow,
    in0k_lazarusIdeSRC__ideForm_CodeExplorerView,
-   //in0k_lazarusIdeSRC__B2SP,
+   uBringToSecond,
    //---
    Forms, Classes;
 
@@ -55,7 +55,10 @@ begin
         EXIT;
     end;
     // вытащить его на ВТОРОЙ план
-    //In0k_lazIdeSRC___B2SP(tmpWnd);
+    {$ifDef _debugLOG_}
+    DEBUG('_wrkEvent_', 'bringToSecond('+tmpWnd.ClassName+addr2txt(tmpWnd)+')');
+    {$endIf};
+    bringToSecond(tmpWnd);
 end;
 
 end.

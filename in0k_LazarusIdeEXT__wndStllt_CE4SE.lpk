@@ -9,7 +9,7 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__ideForms;srcPKG"/>
+        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__ideForms;srcEXT\in0k-bringToSecondPlane_src;srcPKG"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <CodeGeneration>
@@ -26,7 +26,7 @@
     </CompilerOptions>
     <Description Value="When &quot;Source Editor&quot; window receive focus, window &quot;Code Explorer&quot; bring to second plan (moves the window &quot;Code Explorer&quot; of the sequence Z-Order directly under active window &quot;Source Editor&quot;)."/>
     <Version Minor="6"/>
-    <Files Count="5">
+    <Files Count="6">
       <Item1>
         <Filename Value="in0k_LazarusIdeSRC__SETTINGs.inc"/>
         <Type Value="Text"/>
@@ -48,6 +48,10 @@
         <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__TMPLT_4SourceWindow.pas"/>
         <UnitName Value="in0k_lazarusIdeSRC__TMPLT_4SourceWindow"/>
       </Item5>
+      <Item6>
+        <Filename Value="srcEXT\in0k-bringToSecondPlane_src\uBringToSecond.pas"/>
+        <UnitName Value="uBringToSecond"/>
+      </Item6>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>

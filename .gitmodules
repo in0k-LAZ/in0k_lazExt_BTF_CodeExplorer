@@ -10,3 +10,6 @@
 [submodule "srcEXT/in0k_lazarusIdeSRC__ideForms"]
 	path = srcEXT/in0k_lazarusIdeSRC__ideForms
 	url = https://github.com/in0k-LazarusIDE-soures/in0k_lazarusIdeSRC__ideForms.git
+[submodule "srcEXT/in0k-bringToSecondPlane_src"]
+	path = srcEXT/in0k-bringToSecondPlane_src
+	url = https://github.com/in0k-pas-src/in0k-bringToSecondPlane_src.git

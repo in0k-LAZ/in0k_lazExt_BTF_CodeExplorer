@@ -10,7 +10,7 @@ interface
 uses
   in0k_LazarusIdeEXT__REGISTER, in0k_lazarusIdePLG__wndStllt_CE4SE, 
   in0k_lazarusIdeSRC__ideForm_CodeExplorerView, 
-  in0k_lazarusIdeSRC__TMPLT_4SourceWindow, LazarusPackageIntf;
+  in0k_lazarusIdeSRC__TMPLT_4SourceWindow, uBringToSecond, LazarusPackageIntf;
 
 implementation
 
