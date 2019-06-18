@@ -7,16 +7,16 @@ interface
 {$include in0k_LazarusIdeSRC__Settings.inc}
 
 uses {$ifDef in0k_LazarusIdeEXT__DEBUG}in0k_lazarusIdeSRC__wndDEBUG,{$endIf}
-   in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow,
+   in0k_lazarusIdeSRC__TMPLT_4SourceWindow,
    in0k_lazarusIdeSRC__ideForm_CodeExplorerView,
-   in0k_lazarusIdeSRC__B2SP,
+   //in0k_lazarusIdeSRC__B2SP,
    //---
    Forms, Classes;
 
 type
- tIn0k_LazIdeEXT__wndStllte_CE4SE=class(tIn0k_LazIdeEXT__wndStllte_TMPLTs_4SourceWindow)
+ tIn0k_LazIdeEXT__wndStllte_CE4SE=class(tIn0k_lazIdeSRC__TMPLT_4SourceWindow)
   protected
-    procedure _wrkEvent_; override;
+    procedure _wrkEvent_onActivate_(const sender:tObject); override;
   end;
 
 implementation
@@ -29,7 +29,7 @@ implementation
 {%endregion}
 
 // Окно! с редактором ИсходногоКода БЫЛО активировано.
-procedure tIn0k_LazIdeEXT__wndStllte_CE4SE._wrkEvent_;
+procedure tIn0k_LazIdeEXT__wndStllte_CE4SE._wrkEvent_onActivate_(const sender:tObject);
 var tmpWnd:TCustomForm;
 begin
     inherited;
@@ -55,7 +55,7 @@ begin
         EXIT;
     end;
     // вытащить его на ВТОРОЙ план
-    In0k_lazIdeSRC___B2SP(tmpWnd);
+    //In0k_lazIdeSRC___B2SP(tmpWnd);
 end;
 
 end.

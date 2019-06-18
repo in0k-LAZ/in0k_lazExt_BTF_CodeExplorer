@@ -9,7 +9,7 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__ideForms;srcEXT\in0k_lazarusIdeSRC__B2SP;srcEXT\in0k-bringToSecondPlane;srcPKG"/>
+        <OtherUnitFiles Value="srcEXT\in0k_lazarusIdeSRC__expertCORE;srcEXT\in0k_lazarusIdeSRC__wndDEBUG;srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates;srcEXT\in0k_lazarusIdeSRC__ideForms;srcPKG"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <CodeGeneration>
@@ -26,7 +26,7 @@
     </CompilerOptions>
     <Description Value="When &quot;Source Editor&quot; window receive focus, window &quot;Code Explorer&quot; bring to second plan (moves the window &quot;Code Explorer&quot; of the sequence Z-Order directly under active window &quot;Source Editor&quot;)."/>
     <Version Minor="6"/>
-    <Files Count="8">
+    <Files Count="5">
       <Item1>
         <Filename Value="in0k_LazarusIdeSRC__SETTINGs.inc"/>
         <Type Value="Text"/>
@@ -41,25 +41,13 @@
         <UnitName Value="in0k_lazarusIdePLG__wndStllt_CE4SE"/>
       </Item3>
       <Item4>
-        <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow.pas"/>
-        <UnitName Value="in0k_lazarusIdeSRC__wndSatellite_templates__4SourceWindow"/>
-      </Item4>
-      <Item5>
         <Filename Value="srcEXT\in0k_lazarusIdeSRC__ideForms\in0k_lazarusIdeSRC__ideForm_CodeExplorerView.pas"/>
         <UnitName Value="in0k_lazarusIdeSRC__ideForm_CodeExplorerView"/>
+      </Item4>
+      <Item5>
+        <Filename Value="srcEXT\in0k_lazarusIdeSRC__wndSatellite_templates\in0k_lazarusIdeSRC__TMPLT_4SourceWindow.pas"/>
+        <UnitName Value="in0k_lazarusIdeSRC__TMPLT_4SourceWindow"/>
       </Item5>
-      <Item6>
-        <Filename Value="srcEXT\in0k_lazarusIdeSRC__B2SP\in0k_lazarusIdeSRC__B2SP.pas"/>
-        <UnitName Value="in0k_lazarusIdeSRC__B2SP"/>
-      </Item6>
-      <Item7>
-        <Filename Value="srcEXT\in0k-bringToSecondPlane\in0k_bringToSecondPlane_LazLCL.pas"/>
-        <UnitName Value="in0k_bringToSecondPlane_LazLCL"/>
-      </Item7>
-      <Item8>
-        <Filename Value="srcEXT\in0k-bringToSecondPlane\in0k_bringToSecondPlane_WinAPI.pas"/>
-        <UnitName Value="in0k_bringToSecondPlane_WinAPI"/>
-      </Item8>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>
